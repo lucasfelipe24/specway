@@ -8,6 +8,18 @@ Generated automatically from `.specs/archive/` via the `update-changelog` skill.
 ## [Unreleased]
 
 ### Added
+
+### Changed
+
+### Fixed
+
+### Removed
+
+---
+
+## [1.5.0] - 2026-07-02
+
+### Added
 - **cc-sdd-inspired enhancements (CHG-003).** `--dry-run` on the `specway` CLI (`init`/`scan`/`upgrade`)
   previews what would be copied, merged, and stamped — writing nothing. **EARS** added as a requirements
   methodology (`gather-requirements` + template): precise `SHALL` requirements whose acceptance criteria
