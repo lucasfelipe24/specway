@@ -50,7 +50,7 @@ Template — copy, set today's date, append at the bottom:
 - **Refs:** CHG-014, commit 9f3a1c2, TRB-002 (lazy-cursor gotcha).
 -->
 
-## 2026-07-02 — Methodology-enforcing Claude Code hooks (CHG-002, methodology v1.3.0)
+## 2026-07-02 — Methodology-enforcing Claude Code hooks (CHG-002, methodology v1.4.0)
 
 - **Did:** Analysed the repo with an adversarial multi-agent workflow, then shipped a high-signal hook
   set. Tier 0: `SessionStart` matcher now `startup|resume|compact`. New `PreToolUse` guard
@@ -58,7 +58,7 @@ Template — copy, set today's date, append at the bottom:
   of `baseline.json`; new `PostToolUse` nudge (`scripts/methodology-nudge.mjs`) flags a spec written
   without a `## Tests` section and turns `specway upgrade|scan|init` into a next-step directive. Delivery
   gap closed via `scripts/merge-hooks.mjs` (idempotent keyed merge) wired into `cmdScan`/`cmdUpgrade`.
-  Added a `node --test` suite (`test/`, 14 tests) + `npm test`. Bumped methodology version 1.2.0 → 1.3.0
+  Added a `node --test` suite (`test/`, now 17 tests) + `npm test`. Bumped methodology version 1.2.0 → 1.4.0
   (config.md + METHODOLOGY.md versions row) so `upgrade` actually delivers the hooks to the installed
   base. Spec/requirements/alignment-review under `001-methodology-hooks`.
 - **Learned:** (1) `settings.json` is additive/frozen after first setup, so new hook WIRING can't ride
@@ -78,4 +78,4 @@ Template — copy, set today's date, append at the bottom:
   proven by the startup hook; the `compact` matcher reuses that identical mechanism.
 - **Next:** push `feat/methodology-hooks` + open a PR when ready. Deferred hooks (stack-specific TDD
   guard, SessionEnd log breadcrumb) remain in the backlog.
-- **Refs:** CHG-002, requirements 001-methodology-hooks, methodology 1.2.0 → 1.3.0.
+- **Refs:** CHG-002, requirements 001-methodology-hooks, methodology 1.2.0 → 1.4.0.

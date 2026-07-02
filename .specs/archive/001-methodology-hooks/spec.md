@@ -193,4 +193,5 @@ whole-repo `check-consistency`, an "update AGENTS.md?" watcher, any auto-commit/
   from the CLI **output signature** (`tool_output`/`tool_response`), not the command string — after a
   command that merely *mentioned* "specway upgrade" (this spec's own commit message) false-fired the
   directive. Regression tests TEST-15 (no false-fire on a mention) and TEST-16 (output-only detection,
-  object output) added; suite is now 16 tests.
+  object output) added, plus TEST-17 (require command+output to agree, killing the grep/cat
+  output-only false-positive); suite is now 17 tests.

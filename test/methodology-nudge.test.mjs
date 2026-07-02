@@ -1,7 +1,8 @@
-// TEST-08..16 — PostToolUse nudge: spec-no-Tests (REQ-03) + CLI next-step directive (REQ-05).
-// The CLI directive is detected from the tool OUTPUT signature, not the command string, so a command
-// that merely mentions "specway upgrade" (a commit message, an echo) does NOT false-fire (TEST-15).
-// Nudge = exit 0 with an additionalContext JSON; silent = exit 0 with empty stdout. Never blocks.
+// TEST-08..17 — PostToolUse nudge: spec-no-Tests (REQ-03) + CLI next-step directive (REQ-05).
+// The CLI directive requires BOTH signals: the command must invoke `specway <sub>` AND the tool
+// output must carry that CLI's signature. Either alone false-fires — command-only on a commit that
+// merely mentions the words (TEST-15); output-only on a grep/cat of files that contain the signature
+// text (TEST-16). Nudge = exit 0 + additionalContext JSON; silent = exit 0 + empty stdout.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
@@ -58,11 +59,11 @@ test("TEST-09: silent when the spec already has a Tests section", () => {
   cleanup(root);
 });
 
-test("TEST-10: turns a real `specway upgrade` run (by its output) into a next-step directive", () => {
+test("TEST-10: fires when the command invokes specway AND the output has the signature (npx upgrade)", () => {
   const { status, out } = run({
     tool_name: "Bash",
     tool_input: { command: "npx @lucasfelipe23/specway upgrade" },
-    tool_response: "Upgrading methodology 1.2.0 → 1.3.0\n✓ added 5 new paths, refreshed 9 tooling files",
+    tool_response: "Upgrading methodology 1.2.0 → 1.4.0\n✓ added 5 new paths, refreshed 9 tooling files",
   });
   assert.equal(status, 0);
   assert.match(ctx(out), /reconcile-upgrade/i);
@@ -79,20 +80,30 @@ test("TEST-11: silent on `specway check`", () => {
   assert.equal(out, "");
 });
 
-test("TEST-15: does NOT false-fire when a command merely mentions `specway upgrade` (e.g. a commit)", () => {
+test("TEST-15: silent when a command only MENTIONS `specway upgrade` (e.g. a commit) — no CLI output", () => {
   const { status, out } = run({
     tool_name: "Bash",
     tool_input: { command: 'git commit -m "so specway upgrade actually delivers the hooks"' },
-    tool_response: "[feat/methodology-hooks 70b80a9] so specway upgrade actually delivers the hooks",
+    tool_response: "[main 70b80a9] so specway upgrade actually delivers the hooks",
   });
   assert.equal(status, 0);
   assert.equal(out, "");
 });
 
-test("TEST-16: detects a scan by its output signature even when the command has no signature (object output)", () => {
+test("TEST-16: silent when output CONTAINS the signature but the command is not a specway run (grep/cat)", () => {
   const { status, out } = run({
     tool_name: "Bash",
-    tool_input: { command: "bash ./run-scan.sh" },
+    tool_input: { command: 'grep -rn "Upgrading methodology" test/' },
+    tool_response: 'test/methodology-nudge.test.mjs:65:  tool_response: "Upgrading methodology 1.2.0 → 1.4.0"',
+  });
+  assert.equal(status, 0);
+  assert.equal(out, "");
+});
+
+test("TEST-17: fires on a real `node bin/specway.mjs scan` with the scan output signature (object output)", () => {
+  const { status, out } = run({
+    tool_name: "Bash",
+    tool_input: { command: "node bin/specway.mjs scan" },
     tool_output: { stdout: "✓ overlaid 12 methodology paths (existing project files untouched)", stderr: "" },
   });
   assert.equal(status, 0);

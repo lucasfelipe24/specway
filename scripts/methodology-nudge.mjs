@@ -10,8 +10,8 @@
 // exit 0. Stdlib only, no network, reads nothing outside the repo, mutates no files. Claude-Code-only
 // accelerator — the harness-agnostic backstops (run-tdd, reconcile-upgrade, AGENTS.md, CI) still hold.
 //
-// stdin: PostToolUse JSON { tool_name, tool_input:{ file_path? }, tool_output|tool_response, cwd }.
-//   (the CLI directive keys off the tool OUTPUT signature, not the command string — see below.)
+// stdin: PostToolUse JSON { tool_name, tool_input:{ file_path?, command? }, tool_output|tool_response, cwd }.
+//   (the CLI directive requires the command AND the output to agree on the subcommand — see below.)
 // stdout: nothing (silent) OR an additionalContext JSON.
 
 import { readFileSync, existsSync } from "node:fs";
@@ -57,9 +57,15 @@ const specTestsNudge = (rp) =>
   "(Rule 3) needs a `## Regression Test` that reproduces the bug. check-consistency does not validate " +
   "this — it is on you to make the spec Red-able first.";
 
-// Detect that the specway CLI actually RAN, from its distinctive stdout signature — NOT the command
-// string. A commit message, echo, or grep that merely mentions "specway upgrade" must not fire; only
-// the CLI's own output does. Returns the subcommand, or null.
+// The CLI next-step directive requires TWO independent signals to AGREE, because each alone
+// false-fires: (a) the command textually invokes `specway <sub>` — but a commit message or grep
+// pattern can contain those words; (b) the tool output carries the CLI's own signature — but a
+// grep/cat of files that contain that text reproduces it. Only when BOTH point at the same
+// subcommand did the CLI actually run.
+function specwaySubcommand(cmd) {
+  const m = cmd.match(/\bspecway(?:\.mjs)?(?:@[^\s]+)?\s+(upgrade|scan|init)\b/);
+  return m ? m[1] : null;
+}
 function specwayRanFromOutput(out) {
   if (/\bUpgrading methodology\b/.test(out) || /stamped .*Methodology Version/i.test(out)) return "upgrade";
   if (/overlaid\s+\d+\s+methodology paths/i.test(out)) return "scan";
@@ -108,7 +114,7 @@ try {
   if (tool === "Bash") {
     const out = payload.tool_output ?? payload.tool_response ?? "";
     const sub = specwayRanFromOutput(typeof out === "string" ? out : JSON.stringify(out));
-    if (sub) inject(cliNextStepDirective(sub));
+    if (sub && specwaySubcommand(String(input.command || "")) === sub) inject(cliNextStepDirective(sub));
   }
 
   silent();

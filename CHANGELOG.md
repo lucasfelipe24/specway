@@ -8,7 +8,19 @@ Generated automatically from `.specs/archive/` via the `update-changelog` skill.
 ## [Unreleased]
 
 ### Added
-- **Methodology-enforcing Claude Code hooks (CHG-002)** — methodology version bumped to 1.3.0. A `PreToolUse` guard
+
+### Changed
+
+### Fixed
+
+### Removed
+
+---
+
+## [1.4.0] - 2026-07-02
+
+### Added
+- **Methodology-enforcing Claude Code hooks (CHG-002)** — methodology version bumped to 1.4.0. A `PreToolUse` guard
   (`scripts/methodology-guard.mjs`) blocks archiving a requirements-backed spec until its
   `alignment-review.md` reads `aligned`, and blocks hand-edits/deletes of `.specs/baseline.json`.
   A `PostToolUse` nudge (`scripts/methodology-nudge.mjs`) flags a `changes/**/spec.md` written with
@@ -18,7 +30,7 @@ Generated automatically from `.specs/archive/` via the `update-changelog` skill.
 - **Idempotent keyed hook-merge** (`scripts/merge-hooks.mjs`): `specway scan`/`upgrade` deliver new
   kit hook wiring into an existing (frozen) `.claude/settings.json` — add-only, keyed by
   `matcher`+`command`, never clobbering the project's own hooks.
-- **`node --test` suite** (`test/`, 14 tests) for the kit scripts; `npm test` runs it.
+- **`node --test` suite** (`test/`, 17 tests) for the kit scripts; `npm test` runs it.
 
 ### Changed
 - **Memory scaffold separated from kit's working memory.** CLI now copies
