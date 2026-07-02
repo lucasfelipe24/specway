@@ -1,8 +1,8 @@
 ---
 name: gather-requirements
 description: >-
-  Guide requirements elicitation from a raw idea to a structured requirements document. Use when the
-  user says "gather requirements", "levantar requisitos", "elicit requirements" or "elicitar
+  Guide requirements gathering from a raw idea to a structured requirements document. Use when the
+  user says "gather requirements", "levantar requisitos", "collect requirements" or "coletar
   requisitos", or before writing a spec for a non-trivial feature. Supports User Stories, Use Cases,
   Job Stories and BDD, and writes to .specs/requirements/<nnn>-<slug>/. For trivial changes (typo,
   refactor, dependency bump, simple bugfix) skip this and use the run-change fast-path instead.
@@ -14,7 +14,7 @@ metadata:
 
 ## Purpose
 
-Guide the requirements elicitation process — from a raw idea or problem statement to a structured
+Guide the requirements gathering process — from a raw idea or problem statement to a structured
 requirements document. Supports multiple methodologies (User Stories, Use Cases, Job Stories, BDD)
 and lets the engineer choose the best fit.
 
@@ -31,7 +31,7 @@ and lets the engineer choose the best fit.
 Ask the user whether they have a concrete problem ("I have a problem to solve" → Step 2A) or are
 exploring/brainstorming ("I'm exploring" → Step 2B).
 
-### Step 2A: Elicitation from a Problem
+### Step 2A: Gathering from a Problem
 
 Ask sequentially:
 1. **"Describe the problem or need in 2-3 sentences."** → `## 1. Problem Statement` (verbatim).
@@ -55,7 +55,7 @@ Ask sequentially:
 Present and let the engineer choose: User Stories, Use Cases, Job Stories, BDD/Gherkin, EARS, or Hybrid.
 Mark the choice in `## 3. Methodology` and guide the matching section (4.1–4.5).
 
-### Step 4: Elicit Functional Requirements
+### Step 4: Gather Functional Requirements
 
 - **User Stories:** per role, what they need + acceptance criteria → `### 4.1`.
 - **Use Cases:** actor, pre-condition, main flow, alternatives, exceptions → `### 4.2`.
@@ -118,7 +118,7 @@ After completing the process, report:
 
 **User says:** "levantar requisitos para um sistema de login"
 
-**Agent should:** elicit problem → stakeholders → choose User Stories → write stories + acceptance
+**Agent should:** gather the problem → stakeholders → choose User Stories → write stories + acceptance
 criteria → extract REQ-01/02 → MoSCoW → save to `.specs/requirements/001-login/requirements.md` →
 report.
 
@@ -126,7 +126,7 @@ report.
 
 **User says:** "gather requirements for payment processing"
 
-**Agent should:** elicit problem → stakeholders → choose Hybrid → UC-01 with flows + BDD scenarios
+**Agent should:** gather the problem → stakeholders → choose Hybrid → UC-01 with flows + BDD scenarios
 (happy path, declined card, timeout) → extract REQs/NFRs (PCI, response < 2s) → save and report.
 
 ## References

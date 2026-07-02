@@ -14,7 +14,7 @@ Este Specway implementa um fluxo completo de engenharia de software:
 
 ```
 IDEA BRUTA
-  → ELICITAÇÃO (gather-requirements: User Stories, Use Cases, Job Stories, BDD)
+  → LEVANTAMENTO (gather-requirements: User Stories, Use Cases, Job Stories, BDD)
     → ANÁLISE (MoSCoW, stakeholders, riscos, dependências)
       → ESPECIFICAÇÃO (specs em .specs/changes/)
         → TDD (Red → Green → Refactor)
@@ -28,7 +28,7 @@ CONSISTÊNCIA (check-consistency pré-commit)
 
 | Pilar | Descrição |
 |---|---|
-| **Requirements Engineering** | Elicitação e análise de requisitos antes de qualquer código |
+| **Requirements Engineering** | Levantamento e análise de requisitos antes de qualquer código |
 | **Spec-Driven Development** | Toda mudança passa por um documento de especificação |
 | **Test-Driven Development** | Testes escritos antes da implementação (Red → Green → Refactor) |
 | **ADR (Architecture Decision Records)** | Decisões de arquitetura documentadas e rastreáveis |
@@ -98,7 +98,7 @@ novas seções aos docs do projeto. Veja o changelog de estrutura em `METHODOLOG
 
 ### 3. Comece a desenvolver
 
-Diga ao agente: `"levantar requisitos"` para iniciar a elicitação com a skill `gather-requirements`,
+Diga ao agente: `"levantar requisitos"` para iniciar o levantamento com a skill `gather-requirements`,
 ou `"mudança rápida"` para o caminho leve.
 
 ## Estrutura de Diretórios
@@ -124,7 +124,7 @@ ou `"mudança rápida"` para o caminho leve.
 │
 ├── .specs/
 │   ├── config.md                  # Fonte única de constantes (URL, stacks, defaults, formato de skill)
-│   ├── requirements/              # Documentos de elicitação e análise
+│   ├── requirements/              # Documentos de levantamento e análise
 │   │   └── <nnn>-<slug>/
 │   │       └── requirements.md
 │   ├── changes/                   # Specs ativas (implementação)
@@ -164,7 +164,7 @@ ou `"mudança rápida"` para o caminho leve.
 
 | Template | Quando usar |
 |---|---|
-| `requirements-spec.md` | Elicitação: problem statement, stakeholders, user stories, use cases, job stories, BDD, MoSCoW |
+| `requirements-spec.md` | Levantamento: problem statement, stakeholders, user stories, use cases, job stories, BDD, MoSCoW |
 | `feature-spec.md` | Features novas: design, estados, edge cases, traceability |
 | `bugfix-spec.md` | Correções: reprodução, causa raiz, teste de regressão |
 | `migration-spec.md` | Migrações: schema, dados, rollback |
@@ -210,7 +210,7 @@ O Specway é agnóstico a tecnologia. Veja `.specs/config.md` para a lista compl
 | `"scan project"` | Adotar a metodologia em projeto existente (detecta stack, sem clobber) |
 | `"atualizar metodologia"` | Atualizar um projeto que já usa a metodologia para a versão mais nova (só o delta) |
 | `"mudança rápida"` | Roteador de cerimônia: leve vs completo |
-| `"levantar requisitos"` | Iniciar elicitação de requisitos |
+| `"levantar requisitos"` | Iniciar levantamento de requisitos |
 | `"revisar alinhamento"` | Verificar semanticamente se o spec cobre os requisitos (gate de archive) |
 | `"executar TDD"` | Ciclo Red → Green → Refactor |
 | `"registrar troubleshooting"` | Gravar erro + estratégia de correção em `memory/troubleshooting.md` |

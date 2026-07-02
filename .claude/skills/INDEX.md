@@ -11,7 +11,7 @@
 | `create-project` | One-shot skill that bootstraps a completely new project from specway. |
 | `create-skill` | Guide to create new, standardized skills for this project. |
 | `cut-release` | Prepare a release deterministically and safely. |
-| `gather-requirements` | Guide the requirements elicitation process — from a raw idea or problem statement to a structured requirements document. |
+| `gather-requirements` | Guide the requirements gathering process — from a raw idea or problem statement to a structured requirements document. |
 | `implement-spec` | Drive a spec to completion **task-by-task, autonomously**, with quality guardrails that a single long context can't provide. |
 | `init-project` | Guide users through the initial setup of a new project following the spec-driven + TDD methodology. |
 | `reconcile-upgrade` | Finish a methodology upgrade. |

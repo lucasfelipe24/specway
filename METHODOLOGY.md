@@ -27,7 +27,7 @@ project/
 │
 ├── .specs/
 │   ├── config.md                # Single source of constants + skill format
-│   ├── requirements/            # Requirements documents (elicitation & analysis)
+│   ├── requirements/            # Requirements documents (gathering & analysis)
 │   │   └── <nnn>-<slug>/
 │   │       └── requirements.md
 │   │
@@ -65,13 +65,13 @@ A ready-to-use template is provided in `specway/`. Clone or copy it to bootstrap
 
 ## 2. Requirements Engineering
 
-Before writing a spec, requirements must be elicited, analyzed, and documented. This phase lives in `.specs/requirements/`.
+Before writing a spec, requirements must be gathered, analyzed, and documented. This phase lives in `.specs/requirements/`.
 
 ### Full Lifecycle
 
 ```
 IDEA (raw problem or opportunity)
-  → ELICITATION (gather requirements from stakeholders)
+  → GATHERING (gather requirements from stakeholders)
     → ANALYSIS (prioritize, resolve conflicts, identify dependencies)
       → REQUIREMENTS DOC (requirements-spec.md in requirements/<nnn>-<slug>/)
         → SPECIFICATION (spec.md in changes/<nnn>-<slug>/)
@@ -83,14 +83,14 @@ IDEA (raw problem or opportunity)
 ### Directory Flow
 
 ```
-.specs/requirements/<nnn>-<slug>/requirements.md   (Phase: Elicitation & Analysis)
+.specs/requirements/<nnn>-<slug>/requirements.md   (Phase: Gathering & Analysis)
     →  .specs/changes/<nnn>-<slug>/spec.md          (Phase: Specification & Implementation)
         →  .specs/archive/<nnn>-<slug>/             (Phase: Completed)
 ```
 
 The same `<nnn>` number is used across directories for full traceability: from requirements → spec → archive.
 
-### Elicitation Methodologies
+### Gathering Methodologies
 
 The engineer chooses the best fit for each requirement. Supported approaches:
 
@@ -132,7 +132,7 @@ When requirements are approved:
 
 ### Skill
 
-Use the `gather-requirements` skill (`"levantar requisitos"`, `"gather requirements"`) to guide the elicitation process interactively.
+Use the `gather-requirements` skill (`"levantar requisitos"`, `"gather requirements"`) to guide the gathering process interactively.
 
 ### When to Skip
 
@@ -148,7 +148,7 @@ Not every change needs formal requirements. Skip this phase when:
 ### Step-by-Step
 
 ```
-0. ELICIT REQUIREMENTS (if applicable)
+0. GATHER REQUIREMENTS (if applicable)
    Use requirements-spec.md in .specs/requirements/<nnn>-<slug>/
    Choose methodology: User Stories, Use Cases, Job Stories, or BDD
    See Section 2 for full details.

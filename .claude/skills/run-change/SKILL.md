@@ -3,7 +3,7 @@ name: run-change
 description: >-
   Decide the right ceremony for a change and run the lightweight path for trivial work. Use when the
   user says "run change", "fazer mudança", "quick change" or "mudança rápida", or asks for a small
-  edit (typo, refactor, dependency bump, simple bugfix) where full requirements elicitation would be
+  edit (typo, refactor, dependency bump, simple bugfix) where full requirements gathering would be
   overkill. Routes non-trivial work to gather-requirements + the full spec flow instead.
 metadata:
   version: 1.0.0
