@@ -51,27 +51,3 @@ Template — copy, set today's date, append at the bottom:
 -->
 
 _No entries yet. The first work session appends the first block above._
-
-## 2026-07-02 — `.agents/` feature implemented and reverted (CHG-001)
-
-- **Did:** Implemented `copyScaffoldSkillsTo()` helper in `bin/specway.mjs` — mirrored `.claude/skills/` to `.agents/skills/` during `init`, `adopt`, `upgrade`. Created integration test.
-- **Reverted:** User decided not to pursue the `.agents/` approach. Removed all code and test file. Spec CHG-001 marked as reverted.
-- **Learned:** The changelog script requires `CHG-`/`FIX-`/`MIG-` IDs in the spec body; added `CHG-001` so the generator picks it up.
-- **Next:** Publish `@lucasfelipe23/specway` to NPM.
-- **Refs:** CHG-001
-
-## 2026-07-02 — Project renamed, CHG-001 reverted, changelog updated
-
-- **Did:** `scaffoldSkillsTo()` removed, `.agents/` spec removed from archive, CHANGELOG cleaned up.
-  CLI renamed `spec-kit` → `specway`, binary file renamed. Skill `adopt-project` → `scan-project`.
-  CHANGELOG updated with all changes.
-- **Learned:** Reverted specs should be removed from archive so the changelog generator stays in sync.
-- **Next:** Publish `@lucasfelipe23/specway` to NPM.
-- **Refs:**
-
-## 2026-07-02 — CLI command `adopt` fully removed in favor of `scan`
-
-- **Did:** Removed `cmdAdopt()` → renamed to `cmdScan()` in `bin/specway.mjs`. Removed `case "adopt"` alias entirely (no deprecation, no backward compat). Updated all references in `README.md`, `METHODOLOGY.md`, `CHANGELOG.md`, scan-project SKILL.md, upgrade-methodology SKILL.md. Replaced descriptive uses of "adopt" with "scan" throughout.
-- **Learned:** n/a
-- **Next:** Publish `@lucasfelipe23/specway` to NPM.
-- **Refs:**
