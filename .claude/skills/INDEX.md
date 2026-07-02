@@ -8,7 +8,7 @@
 | Skill | Purpose |
 |---|---|
 | `check-consistency` | Validate that every skill in `.claude/skills/` and the project's conventions hold, using a real script so the result is deterministic (not a best-effort prose scan). |
-| `create-project` | One-shot skill that bootstraps a completely new project from the sdd-kit. |
+| `create-project` | One-shot skill that bootstraps a completely new project from specway. |
 | `create-skill` | Guide to create new, standardized skills for this project. |
 | `cut-release` | Prepare a release deterministically and safely. |
 | `gather-requirements` | Guide the requirements elicitation process — from a raw idea or problem statement to a structured requirements document. |
@@ -21,4 +21,4 @@
 | `run-tdd` | Guide agents through the Test-Driven Development cycle integrated with the spec-driven methodology. |
 | `scan-project` | Add the spec-driven + TDD methodology to a repository that **already has a stack, code, and possibly its own `AGENTS.md`, CI, and `package.json`**. |
 | `update-changelog` | Generate changelog entries from archived specs using a real script. |
-| `upgrade-methodology` | Bring a project that already uses the methodology up to the sdd-kit's latest version, applying **only the delta** — non-destructively, never re-running setup and never clobbering project content. |
+| `upgrade-methodology` | Bring a project that already uses the methodology up to specway's latest version, applying **only the delta** — non-destructively, never re-running setup and never clobbering project content. |

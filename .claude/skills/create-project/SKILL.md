@@ -1,7 +1,7 @@
 ---
 name: create-project
 description: >-
-  One-shot bootstrap of a brand-new project from the sdd-kit: clone from GitHub, clean git
+  One-shot bootstrap of a brand-new project from specway: clone from GitHub, clean git
   history, then run the full init-project flow. Use when the user says "create new project",
   "criar novo projeto", "start from scratch" or "começar do zero". Delegates stack configuration
   to the init-project skill — it does NOT duplicate those steps.
@@ -9,11 +9,11 @@ metadata:
   version: 1.1.0
 ---
 
-# Create Project from sdd-kit
+# Create Project from specway
 
 ## Purpose
 
-One-shot skill that bootstraps a completely new project from the sdd-kit. Clones the repository
+One-shot skill that bootstraps a completely new project from specway. Clones the repository
 from GitHub, cleans the git history, and runs the interactive `init-project` flow to configure the
 technology stack and methodology. The developer gets a ready-to-use project directory with AGENTS.md
 filled, conventions set, ADR-003 recorded, and the first specs in place.
@@ -21,17 +21,17 @@ filled, conventions set, ADR-003 recorded, and the first specs in place.
 ## Prerequisites
 
 - `git` installed and available in PATH
-- Network access to the sdd-kit repository (URL in `.specs/config.md## Repository`)
+- Network access to specway repository (URL in `.specs/config.md## Repository`)
 - The `init-project` skill (this skill delegates to it)
 
 ## Instructions
 
 ### Step 1: Detect Context
 
-Check whether we are already inside a sdd-kit directory:
+Check whether we are already inside a specway directory:
 - Read `AGENTS.md` (if it exists).
 - If `AGENTS.md` contains unfilled `{PLACEHOLDERS}` (e.g., `{PROJECT_NAME}`), we are inside an
-  uninitialized sdd-kit → **skip to Step 4** (run init-project in place).
+  uninitialized specway → **skip to Step 4** (run init-project in place).
 - If `AGENTS.md` does not exist or has already been filled, we need a fresh copy → **Step 2**.
 
 ### Step 2: Gather Project Info
@@ -98,18 +98,18 @@ A complete, initialized project directory ready for development, containing:
 **User says:** "criar novo projeto"
 
 **Agent should:**
-1. Detect we are NOT in a sdd-kit → proceed to clone.
+1. Detect we are NOT in a specway → proceed to clone.
 2. Ask project name → "my-web-app"; ask/confirm target directory.
 3. Clone (URL from config.md) → clean `.git` → `git init`.
 4. Run init-project in full (WEB, REACT, NODE, POSTGRES, en, VITEST, 80, pnpm).
 5. Report summary with full path.
 
-### Example 2: Already inside a sdd-kit directory
+### Example 2: Already inside a specway directory
 
 **User says:** "create new project"
 
 **Agent should:**
-1. Read AGENTS.md → detects `{PROJECT_NAME}` placeholder → uninitialized sdd-kit.
+1. Read AGENTS.md → detects `{PROJECT_NAME}` placeholder → uninitialized specway.
 2. Skip clone/clean.
 3. Run init-project normally (all 9 questions).
 4. Report summary.

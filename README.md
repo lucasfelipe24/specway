@@ -2,8 +2,8 @@
 
 [![npm](https://img.shields.io/npm/v/@lucasfelipe23/specway)](https://www.npmjs.com/package/@lucasfelipe23/specway)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Methodology](https://img.shields.io/badge/methodology-spec--driven_%2B_TDD-blue)](https://github.com/lucasfelipe24/sdd-kit/blob/master/METHODOLOGY.md)
-[![AI Ready](https://img.shields.io/badge/AI_Agent-ready-green)](https://github.com/lucasfelipe24/sdd-kit/blob/master/AGENTS.md)
+[![Methodology](https://img.shields.io/badge/methodology-spec--driven_%2B_TDD-blue)](https://github.com/lucasfelipe24/specway/blob/main/METHODOLOGY.md)
+[![AI Ready](https://img.shields.io/badge/AI_Agent-ready-green)](https://github.com/lucasfelipe24/specway/blob/main/AGENTS.md)
 ![Status](https://img.shields.io/badge/status-stable-brightgreen)
 
 Um kit de partida para projetos de software com metodologia integrada de engenharia de requisitos, desenvolvimento orientado a especificações e TDD.
@@ -65,7 +65,7 @@ A skill `create-project` faz **tudo automaticamente**: clona o repositório do S
 ### 2. (Alternativo) Clone manual
 
 ```bash
-git clone https://github.com/lucasfelipe24/sdd-kit.git meu-projeto
+git clone https://github.com/lucasfelipe24/specway.git meu-projeto
 cd meu-projeto
 rm -rf .git
 git init

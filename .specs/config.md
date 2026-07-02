@@ -5,7 +5,7 @@ values. This file is harness-agnostic — it is not specific to any agent tool.
 
 ## Repository
 
-- **URL:** `https://github.com/lucasfelipe24/sdd-kit.git`
+- **URL:** `https://github.com/lucasfelipe24/specway.git`
 - **Package:** `@lucasfelipe23/specway` (`npx @lucasfelipe23/specway`)
 
 ## Methodology Version

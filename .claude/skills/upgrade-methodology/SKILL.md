@@ -1,7 +1,7 @@
 ---
 name: upgrade-methodology
 description: >-
-  Bring a project that ALREADY uses this methodology up to the sdd-kit's latest version, applying
+  Bring a project that ALREADY uses this methodology up to specway's latest version, applying
   only the delta non-destructively. Use when the user says "upgrade methodology", "atualizar
   metodologia", "sync methodology", "sincronizar metodologia", "migrar metodologia" or "update
   methodology" inside a repo that already has .specs/ and .claude/skills/. Version-aware: compares the
@@ -16,7 +16,7 @@ metadata:
 
 ## Purpose
 
-Bring a project that already uses the methodology up to the sdd-kit's latest version, applying
+Bring a project that already uses the methodology up to specway's latest version, applying
 **only the delta** — non-destructively, never re-running setup and never clobbering project content.
 A project set up months ago is frozen at the version it was bootstrapped with; when the kit adds
 skills, templates, checker rules, or memory pages, those projects don't get them automatically. This
@@ -29,7 +29,7 @@ skill closes that gap by comparing the project's methodology version against the
   `.claude/skills/` exist). If they don't, this is the wrong skill — use `scan-project` (existing
   code) or `init-project` (new project).
 - `git` and **Node.js** in PATH.
-- The sdd-kit URL — from `.specs/config.md## Repository` (reference it; do not hardcode).
+- The specway URL — from `.specs/config.md## Repository` (reference it; do not hardcode).
 - The kit's `METHODOLOGY.md## Methodology Versions` table — the per-version changelog this skill
   explains the delta from.
 
@@ -42,7 +42,7 @@ treat the installed version as `1.0.0` (the project predates versioning). Record
 
 ### Step 2: Fetch the Latest and Compare
 
-Clone the sdd-kit (URL from `.specs/config.md## Repository`) into a **temporary directory**. Read
+Clone specway (URL from `.specs/config.md## Repository`) into a **temporary directory**. Read
 its `config.md## Methodology Version` as `TO`.
 
 - If `FROM` ≥ `TO`: report "already current at `FROM`" and stop — nothing to do.

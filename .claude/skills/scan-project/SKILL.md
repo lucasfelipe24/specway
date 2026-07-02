@@ -26,7 +26,7 @@ test retrofit is demanded.
 - You are at the root of an existing **git** repository that already contains source code.
 - `git` and **Node.js** in PATH (the kit's `scripts/*.mjs` tooling requires Node, even if the target
   project is not a Node project).
-- The sdd-kit repository URL — recorded in the kit's `.specs/config.md## Repository`
+- The specway repository URL — recorded in the kit's `.specs/config.md## Repository`
   (reference it; do not hardcode the literal here).
 
 ## Instructions
@@ -34,7 +34,7 @@ test retrofit is demanded.
 ### Step 1: Preflight & Collision Report
 
 1. Confirm this is an existing repo **with code** (e.g., a manifest + a `src/`/equivalent), not an
-   empty dir and not a sdd-kit (no unfilled `{PROJECT_NAME}` in an existing `AGENTS.md`). If it
+   empty dir and not a specway (no unfilled `{PROJECT_NAME}` in an existing `AGENTS.md`). If it
    looks greenfield, suggest `init-project` instead and stop. If the repo **already uses the
    methodology** (`.specs/config.md` exists, with or without a `## Methodology Version`), this is not
    a first-time adoption — suggest the `upgrade-methodology` skill instead and stop.
@@ -48,7 +48,7 @@ test retrofit is demanded.
 
 ### Step 2: Bring in the Methodology Files (non-destructive)
 
-Clone the sdd-kit (URL from `.specs/config.md## Repository`) into a **temporary directory**, then
+Clone specway (URL from `.specs/config.md## Repository`) into a **temporary directory**, then
 copy **only paths that do not already exist** in the target:
 
 - `.claude/skills/` (all skills, including this one)

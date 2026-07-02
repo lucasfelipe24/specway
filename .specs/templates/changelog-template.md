@@ -5,7 +5,7 @@ Generated automatically from `.specs/archive/` via the `update-changelog` skill 
 when a spec is archived. Follows the [Keep a Changelog](https://keepachangelog.com) format.
 
 > This file tracks the **project's own** changes. It is intentionally empty at bootstrap: a project
-> created from the sdd-kit does **not** inherit the kit's changelog. The methodology *structure*
+> created from specway does **not** inherit the kit's changelog. The methodology *structure*
 > version is tracked separately in `.specs/config.md## Methodology Version`, not here.
 
 ---

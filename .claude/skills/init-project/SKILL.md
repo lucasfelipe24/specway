@@ -1,7 +1,7 @@
 ---
 name: init-project
 description: >-
-  Bootstrap an already-cloned sdd-kit into a configured project. Use when the user says
+  Bootstrap an already-cloned specway into a configured project. Use when the user says
   "start project", "iniciar projeto", "bootstrap project" or "inicializar projeto". Asks the
   9 stack questions, fills AGENTS.md, narrows conventions.md, records ADR-003 (technology stack),
   and creates the bootstrap requirements + spec. Do NOT use to clone a fresh copy from GitHub —
@@ -20,7 +20,7 @@ the first requirements + spec, and leaves the project ready for development.
 
 ## Prerequisites
 
-- The sdd-kit must already be copied to the project root
+- specway must already be copied to the project root
 - Read `AGENTS.md`, `METHODOLOGY.md`, `.specs/memory/conventions.md`, `.specs/memory/architecture.md`
 - `.specs/config.md` — source of truth for the supported stack options (do not hardcode them here)
 

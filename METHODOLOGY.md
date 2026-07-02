@@ -59,7 +59,7 @@ project/
 
 ### Starter Kit
 
-A ready-to-use template is provided in `sdd-kit/`. Clone or copy it to bootstrap a new project with the full structure plus blank templates with placeholder markers like `{PROJECT_NAME}`, `{STYLING_APPROACH}`, etc.
+A ready-to-use template is provided in `specway/`. Clone or copy it to bootstrap a new project with the full structure plus blank templates with placeholder markers like `{PROJECT_NAME}`, `{STYLING_APPROACH}`, etc.
 
 ---
 
@@ -561,7 +561,7 @@ Always the first skill in any project. It teaches agents how to create new skill
 
 When starting a new project with this methodology:
 
-1. [ ] Copy everything from this sdd-kit to your new project root
+1. [ ] Copy everything from this specway to your new project root
 2. [ ] Run the `init-project` skill (`"start project"`) to fill in project decisions
 3. [ ] Fill in `AGENTS.md` with project specifics (replace `{PLACEHOLDERS}`)
 4. [ ] Fill in `.specs/memory/conventions.md` with your coding standards
