@@ -89,6 +89,7 @@ const TOOLING = [
   "scripts/check-consistency.mjs", "scripts/update-changelog.mjs", "scripts/update-skills-index.mjs",
   "scripts/session-context.mjs", "scripts/cut-release.mjs",
   "scripts/methodology-guard.mjs", "scripts/methodology-nudge.mjs", // Claude Code hook scripts
+  "scripts/spec-tasks.mjs", // implement-spec loop: deterministic ## Tasks parser
   ".github/workflows/consistency.yml",
   ".specs/methodology.md", // kit-owned methodology rules imported by AGENTS.md — refreshed wholesale
 ];

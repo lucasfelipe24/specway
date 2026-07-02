@@ -14,6 +14,7 @@
     "scripts/methodology-guard.mjs",
     "scripts/methodology-nudge.mjs",
     "scripts/merge-hooks.mjs",
+    "scripts/spec-tasks.mjs",
     ".claude/settings.json",
     ".claude/skills/",
     ".specs/config.md",
@@ -39,6 +40,7 @@
     "skills:index": "node scripts/update-skills-index.mjs",
     "skills:index:check": "node scripts/update-skills-index.mjs --check",
     "session": "node scripts/session-context.mjs",
+    "tasks": "node scripts/spec-tasks.mjs",
     "release": "node scripts/cut-release.mjs",
     "release:check": "node scripts/cut-release.mjs --check"
   }
