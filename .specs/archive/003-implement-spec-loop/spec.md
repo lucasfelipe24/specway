@@ -183,7 +183,7 @@ implement-spec <spec-dir>:
 - [x] Skill has the 6 canonical sections; `check-consistency` + skills index green (16 skills)
 - [x] Degradation path documented (no Workflow tool → run-tdd baseline) (T1 Step 6)
 - [x] `spec-tasks.mjs` wired (`files[]` + `TOOLING` + alias)
-- [ ] Dogfood: run `implement-spec` on a real small spec end-to-end before archiving
+- [ ] Dogfood: **deferred** to the first real multi-task spec (maintainer decision, 2026-07-02) — the loop is complete + validated; live end-to-end proof happens on first real use
 - [x] No regression in the existing tests (suite now 24)
 
 ## Notes
@@ -206,5 +206,6 @@ implement-spec <spec-dir>:
   sequential for resumability/deps; N=3 reviewers fanned out concurrently within each task, distinct
   lenses). Config `## Implement` (REVIEWER_VOTES=3, FEATURE_FLAG_MODE=off) ships in `config.md`.
   `run-change`/`run-tdd` now point large multi-task specs at `implement-spec`. Skills index → 16.
-- **Remaining acceptance:** an end-to-end **dogfood** run of `implement-spec` on a real multi-task spec
-  (spawns the implementer + 3 reviewers + verify) before archiving CHG-004.
+- **Acceptance:** archived on the maintainer's decision (2026-07-02) with the end-to-end **dogfood**
+  deferred to the first real multi-task `implement-spec` run — the parser is tested, the skill is
+  validated (frontmatter/sections/index), config + routing are in; only the live Workflow run is pending.

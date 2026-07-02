@@ -94,3 +94,20 @@ Template — copy, set today's date, append at the bottom:
   independent reviewer, auto-debug) — gets its own full-path spec + design (003). At the next release,
   bump package + methodology version together (coupled for the kit; cut-release enforces it).
 - **Refs:** CHG-003 (archived; lightweight path, no requirements doc).
+
+## 2026-07-02 — Autonomous implement-spec loop (CHG-004)
+
+- **Did:** Full-path spec (requirements in **EARS**, dogfooding CHG-003) for the flagship cc-sdd idea,
+  approved at the alignment gate. Built `scripts/spec-tasks.mjs` (deterministic `## Tasks` parser +
+  next-actionable selector; 4 tests, TDD), `.claude/skills/implement-spec/` (the loop as a **Workflow**:
+  sequential tasks, fresh implementer per task, **N=3** reviewers with diverse lenses, auto-debug on
+  double-reject, HALT on out-of-boundary/red/not-aligned, per-task checkpoint, degrade to `run-tdd`),
+  the `## Implement` config block, and `run-change`/`run-tdd` routing. Archived CHG-004; skills index
+  → 16; CHANGELOG [Unreleased] updated.
+- **Learned:** approved decisions — **Workflow-tool** orchestration (CC-only) + **N=3**. Parser edge: a
+  task whose description contains the literal `_Boundary:_`/`_Depends:_` markers (this meta-spec) needs
+  right-most annotation matching. Built the loop by dogfooding the method (T2 first — no deps).
+- **Next:** **dogfood** — run `implement-spec` end-to-end on the first real multi-task spec (deferred by
+  the maintainer). This completes the cc-sdd initiative: **all 4 ideas shipped**. At the next release,
+  bump package + methodology together and cut `[Unreleased]` (CHG-003 + CHG-004).
+- **Refs:** CHG-004, requirements 003-implement-spec-loop.

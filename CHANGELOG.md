@@ -13,6 +13,12 @@ Generated automatically from `.specs/archive/` via the `update-changelog` skill.
   methodology (`gather-requirements` + template): precise `SHALL` requirements whose acceptance criteria
   map 1:1 to tests. The feature-spec template gains a **`## Tasks`** (boundary/deps) and
   **`## File Structure Plan`** section for boundary-first work (consumed by `run-tdd`, one task at a time).
+- **Autonomous `implement-spec` loop (CHG-004).** A new skill drives an approved spec's `## Tasks` one
+  at a time via a Claude Code **Workflow**: a fresh implementer per task, **N=3 independent reviewers**
+  (majority, diverse lenses), an **auto-debug** pass on repeated failure, **halt** on out-of-boundary /
+  red-check / not-aligned, and a per-task checkpoint (resumable). Backed by `scripts/spec-tasks.mjs`
+  (deterministic `## Tasks` parser) and a `## Implement` config block (`REVIEWER_VOTES`,
+  `FEATURE_FLAG_MODE`). Claude-Code accelerator — opencode falls back to manual `run-tdd`.
 
 ### Changed
 
