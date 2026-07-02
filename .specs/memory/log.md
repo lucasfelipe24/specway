@@ -112,7 +112,7 @@ Template — copy, set today's date, append at the bottom:
   bump package + methodology together and cut `[Unreleased]` (CHG-003 + CHG-004).
 - **Refs:** CHG-004, requirements 003-implement-spec-loop.
 
-## 2026-07-02 — npm packaging leaks fixed (1.5.1)
+## 2026-07-02 — npm packaging leaks fixed (1.5.2)
 
 - **Did:** Removed `.specs/memory/` from `package.json` `files[]` — the kit's own working memory
   (`log.md` history, troubleshooting, catalog) was shipping to consumers. Nothing reads the kit's
@@ -124,5 +124,6 @@ Template — copy, set today's date, append at the bottom:
 - **Learned:** `files[]` is a whitelist, but it whitelisted the wrong `.specs/` subdir — the scaffold
   *source* (`templates/memory/`) is what ships, not the kit's *live* memory. Surfaced by the user
   inspecting the published tarball. Package: 60 → 54 files.
-- **Next:** folded into the unpublished 1.5.1; ready to publish clean.
-- **Refs:** 1.5.1, package.json files[].
+- **Next:** goes out as 1.5.2 (1.5.1 was already published *with* the leak — npm versions are
+  immutable, so the fix ships forward). Ready to publish clean.
+- **Refs:** 1.5.2, package.json files[].

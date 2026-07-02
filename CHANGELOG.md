@@ -17,6 +17,25 @@ Generated automatically from `.specs/archive/` via the `update-changelog` skill.
 
 ---
 
+## [1.5.2] - 2026-07-02
+
+### Added
+
+### Changed
+
+### Fixed
+- **npm package no longer leaks kit-internal working files.** `.specs/memory/` (the kit's own `log.md`
+  history, troubleshooting, and component catalog) was in `package.json` `files[]` and shipped to every
+  consumer — removed it (the CLI seeds a project's memory from the separate `.specs/templates/memory/`
+  scaffold, which still ships). `specway init`/`scan`/`upgrade` also no longer duplicate that scaffold
+  into the target's `.specs/templates/memory/`. And **`.github/workflows/consistency.yml`** was added to
+  the package so projects bootstrapped via `npx` actually receive the CI workflow. Regression tests pin
+  the package contents (`test/npm-package.test.mjs`, `test/cli-scaffold.test.mjs`).
+
+### Removed
+
+---
+
 ## [1.5.1] - 2026-07-02
 
 ### Added
@@ -28,13 +47,6 @@ Generated automatically from `.specs/archive/` via the `update-changelog` skill.
   aligning with the skill name and natural pt-BR usage.
 
 ### Fixed
-- **npm package no longer leaks kit-internal working files.** `.specs/memory/` (the kit's own `log.md`
-  history, troubleshooting, and component catalog) was in `package.json` `files[]` and shipped to every
-  consumer — removed it (the CLI seeds a project's memory from the separate `.specs/templates/memory/`
-  scaffold, which still ships). `specway init`/`scan`/`upgrade` also no longer duplicate that scaffold
-  into the target's `.specs/templates/memory/`. And **`.github/workflows/consistency.yml`** was added to
-  the package so projects bootstrapped via `npx` actually receive the CI workflow. Regression tests pin
-  the package contents (`test/npm-package.test.mjs`, `test/cli-scaffold.test.mjs`).
 
 ### Removed
 
