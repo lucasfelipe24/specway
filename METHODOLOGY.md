@@ -570,7 +570,7 @@ When starting a new project with this methodology:
 7. [ ] Write your first ADR in `.specs/memory/architecture.md`
 8. [ ] Begin spec-driven: create `.specs/requirements/001-init/` for your first requirements
 
-### Adopting into an existing project
+### Adding methodology to an existing project
 
 The checklist above is for **greenfield** projects. To add the methodology to a repository that
 **already has code**, do not run `init-project` — run the **`scan-project`** skill
@@ -630,7 +630,7 @@ own product version:
 |---|---|---|
 | **1.0.0** | 2026-06-02 | Initial methodology: requirements → spec → TDD, memory docs (ADRs, conventions, clean-code, component-catalog, glossary), `check-consistency` + `update-changelog`, the core skills. |
 | **1.1.0** | 2026-06-26 | Memory-as-LLM-Wiki: `troubleshooting.md` + `record-troubleshooting`, append-only `log.md`. Two-tier consistency: `review-alignment` skill + requirements↔spec traceability and the blocking alignment gate in `check-consistency`. `upgrade-methodology` skill + methodology versioning. Clean `changelog-template.md` so bootstrapped projects don't inherit the kit's changelog. Generated skills index (`.claude/skills/INDEX.md`) as the single source for the skills catalog. Session continuity: `session-context.mjs` + SessionStart hook + `resume-session` skill ("where you left off"). |
-| **1.2.0** | 2026-06-26 | `specway` CLI (deterministic init/adopt/upgrade/check via npx) + `reconcile-upgrade` skill for the post-upgrade judgment phase. Forward-only baseline (`.specs/baseline.json`) so upgrading a mature repo never fails CI retroactively. Bilingual + groupable troubleshooting schema. **AGENTS.md ↔ methodology split:** kit-owned rules moved to `.specs/methodology.md` (imported by `AGENTS.md`), so upgrades replace one file and never touch the project-owned `AGENTS.md`. |
+| **1.2.0** | 2026-06-26 | `specway` CLI (deterministic init/scan/upgrade/check via npx) + `reconcile-upgrade` skill for the post-upgrade judgment phase. Forward-only baseline (`.specs/baseline.json`) so upgrading a mature repo never fails CI retroactively. Bilingual + groupable troubleshooting schema. **AGENTS.md ↔ methodology split:** kit-owned rules moved to `.specs/methodology.md` (imported by `AGENTS.md`), so upgrades replace one file and never touch the project-owned `AGENTS.md`. |
 
 ---
 
@@ -651,7 +651,7 @@ extracts the inline sections into the import, preserving project content).
 
 > **FILL THIS IN** when your project has accumulated enough specs and ADRs. Replace the examples below with your own.
 
-The **{PROJECT_NAME}** project ({FULL_TECH_STACK}) adopted this methodology with these results:
+The **{PROJECT_NAME}** project ({FULL_TECH_STACK}) uses this methodology with these results:
 
 ### Specs Created
 | ID | Title | Outcome |

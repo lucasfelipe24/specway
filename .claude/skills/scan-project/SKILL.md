@@ -11,7 +11,7 @@ metadata:
   version: 1.0.0
 ---
 
-# Adopt Methodology into an Existing Project
+# Scan Project — Add Methodology to an Existing Project
 
 ## Purpose
 
@@ -37,8 +37,8 @@ test retrofit is demanded.
    empty dir and not a specway (no unfilled `{PROJECT_NAME}` in an existing `AGENTS.md`). If it
    looks greenfield, suggest `init-project` instead and stop. If the repo **already uses the
    methodology** (`.specs/config.md` exists, with or without a `## Methodology Version`), this is not
-   a first-time adoption — suggest the `upgrade-methodology` skill instead and stop.
-2. Recommend working on a branch: `git checkout -b chore/adopt-methodology`.
+   a first-time methodology setup — suggest the `upgrade-methodology` skill instead and stop.
+2. Recommend working on a branch: `git checkout -b chore/scan-project`.
 3. Build a **collision report** — check whether each of these already exists in the target:
    `.claude/skills/`, `.specs/`, `scripts/`, `.github/workflows/`, `AGENTS.md`, `CLAUDE.md`,
    `package.json`, `CHANGELOG.md`.
@@ -160,7 +160,7 @@ A report covering:
 
 **Agent should:**
 1. Detect a non-empty repo with `package.json` and an existing `AGENTS.md` → not greenfield.
-2. Suggest `chore/adopt-methodology` branch; build the collision report (`AGENTS.md`, `package.json`
+2. Suggest `chore/scan-project` branch; build the collision report (`AGENTS.md`, `package.json`
    exist; `.specs/`, `.claude/skills/` do not).
 3. Clone the kit to a temp dir; copy in `.claude/skills/`, `.specs/`, `scripts/`, CI — skipping
    nothing that collides.
@@ -190,8 +190,8 @@ A report covering:
 
 - `.specs/config.md` — repository URL, supported stack options, methodology version, Skill Format
 - `.claude/skills/init-project/SKILL.md` — placeholder→value mapping reused in Step 3
-- `.claude/skills/upgrade-methodology/SKILL.md` — for repos that already adopted the methodology
-- `.claude/skills/run-change/SKILL.md` — first real change after adoption
+- `.claude/skills/upgrade-methodology/SKILL.md` — for repos that already use the methodology
+- `.claude/skills/run-change/SKILL.md` — first real change after setup
 - `.specs/memory/conventions.md`, `.specs/memory/component-catalog.md`, `.specs/memory/architecture.md` — scaffolds to draft into
 - `AGENTS.md` — template/host for the methodology sections
-- `METHODOLOGY.md` — "Adopting into an existing project"
+- `METHODOLOGY.md` — "Adding methodology to an existing project"

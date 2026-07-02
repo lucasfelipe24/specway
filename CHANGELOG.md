@@ -11,6 +11,7 @@ Generated automatically from `.specs/archive/` via the `update-changelog` skill.
 - Project renamed from `spec-driven-tdd-kit` to `@lucasfelipe23/specway` (package) and `specway` (CLI).
 - CLI binary renamed from `spec-kit` to `specway` (`bin/specway.mjs`).
 - Skill `adopt-project` renamed to `scan-project`.
+- CLI command `adopt` renamed to `scan` (removed, not aliased).
 
 ### Removed
 - `.agents/skills/` mirror — CHG-001 implemented and reverted. The kit only copies skills to `.claude/skills/`.
@@ -21,7 +22,7 @@ Generated automatically from `.specs/archive/` via the `update-changelog` skill.
 
 ### Added
 - **`spec-kit` CLI** (`bin/spec-kit.mjs`, run via `npx github:lucasfelipe24/sdd-kit <cmd>`): the
-  deterministic "hands" of the methodology — `init` / `adopt` / `upgrade` / `check`. It copies files
+  deterministic "hands" of the methodology — `init` / `scan` / `upgrade` / `check`. It copies files
   from its own npx-fetched location (no separate clone), resets identity files, refreshes tooling,
   regenerates the skills index, and stamps the version; the agent skills still do the judgment parts.
   Solves the bootstrap chicken-egg (no manual clone) and makes the mechanical file ops reliable.
@@ -36,7 +37,7 @@ Generated automatically from `.specs/archive/` via the `update-changelog` skill.
   `@.specs/methodology.md`. `AGENTS.md` is now purely project-owned (stack, commands, architecture,
   conventions, testing values), so a methodology upgrade replaces one kit-owned file and **never
   touches `AGENTS.md`** — no per-upgrade diff or clobber risk. `reconcile-upgrade` migrates existing
-  projects to the split. (From real-adoption feedback.)
+  projects to the split. (From real-world usage feedback.)
 - **Provenance + grandfathering clarity:** `reconcile-upgrade` and `run-tdd` now feed
   `.specs/memory/log.md` (the upgrade record and end-of-cycle entry); `baseline.json` carries a note
   that it is a one-time snapshot that does not grow; `methodology.md` Rule 7 states no grandfathering
@@ -89,7 +90,7 @@ Generated automatically from `.specs/archive/` via the `update-changelog` skill.
 ### Fixed
 - Projects bootstrapped from the kit no longer inherit the kit's own `CHANGELOG.md`. A clean
   `.specs/templates/changelog-template.md` is shipped, and `init-project`/`create-project` reset the
-  project's `CHANGELOG.md` (plus `package.json` identity and `README.md`) from it; `adopt-project`
+  project's `CHANGELOG.md` (plus `package.json` identity and `README.md`) from it; `scan-project`
   creates a clean one only when the project has none.
 
 ### Removed

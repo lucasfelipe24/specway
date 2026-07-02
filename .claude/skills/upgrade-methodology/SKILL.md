@@ -6,7 +6,7 @@ description: >-
   metodologia", "sync methodology", "sincronizar metodologia", "migrar metodologia" or "update
   methodology" inside a repo that already has .specs/ and .claude/skills/. Version-aware: compares the
   project's methodology version to the kit's and adds only what is missing or outdated. Do NOT use to
-  adopt the methodology for the first time (that is scan-project) or to bootstrap a new project
+  scan a project for the first time (that is scan-project) or to bootstrap a new project
   (create-project / init-project).
 metadata:
   version: 1.0.0
@@ -150,6 +150,6 @@ make no changes, stop.
 - `.specs/config.md` — repository URL and the `## Methodology Version` stamp this skill reads/bumps
 - `METHODOLOGY.md## Methodology Versions` — the per-version changelog of what each upgrade introduces
 - `.claude/skills/reconcile-upgrade/SKILL.md` — the judgment phase this delegates to (Step 6)
-- `.claude/skills/scan-project/SKILL.md` — first-time adoption (the non-versioned sibling of this skill)
+- `.claude/skills/scan-project/SKILL.md` — first-time methodology scan (the non-versioned sibling of this skill)
 - `.claude/skills/check-consistency/SKILL.md` — run after upgrading to validate the result
 - `.claude/skills/create-skill/SKILL.md` — how the skills being copied in are structured

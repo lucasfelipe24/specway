@@ -46,7 +46,7 @@ diretório atual):
 
 ```bash
 npx @lucasfelipe23/specway init      # novo projeto (scaffold + CHANGELOG limpo + tooling)
-npx @lucasfelipe23/specway adopt     # projeto existente: sobrepõe sem clobber
+npx @lucasfelipe23/specway scan      # projeto existente: sobrepõe sem clobber
 npx @lucasfelipe23/specway upgrade   # projeto que já usa a metodologia: aplica só o delta
 npx @lucasfelipe23/specway check     # roda os checks de consistência aqui
 ```
@@ -111,7 +111,7 @@ ou `"mudança rápida"` para o caminho leve.
 │       └── <nome>/SKILL.md         # Uma pasta por skill, com frontmatter name+description
 │
 ├── bin/
-│   └── specway.mjs               # CLI: init | adopt | upgrade | check (npx, sem clonar)
+│   └── specway.mjs               # CLI: init | scan | upgrade | check (npx, sem clonar)
 │
 ├── scripts/
 │   ├── check-consistency.mjs       # Validador determinístico (roda no CI)

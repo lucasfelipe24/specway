@@ -68,3 +68,10 @@ _No entries yet. The first work session appends the first block above._
 - **Learned:** Reverted specs should be removed from archive so the changelog generator stays in sync.
 - **Next:** Publish `@lucasfelipe23/specway` to NPM.
 - **Refs:**
+
+## 2026-07-02 — CLI command `adopt` fully removed in favor of `scan`
+
+- **Did:** Removed `cmdAdopt()` → renamed to `cmdScan()` in `bin/specway.mjs`. Removed `case "adopt"` alias entirely (no deprecation, no backward compat). Updated all references in `README.md`, `METHODOLOGY.md`, `CHANGELOG.md`, scan-project SKILL.md, upgrade-methodology SKILL.md. Replaced descriptive uses of "adopt" with "scan" throughout.
+- **Learned:** n/a
+- **Next:** Publish `@lucasfelipe23/specway` to NPM.
+- **Refs:**

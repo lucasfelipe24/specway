@@ -9,7 +9,7 @@
 //
 // Commands:
 //   init     scaffold a NEW project here (copy the methodology, reset identity files)
-//   adopt    overlay the methodology onto an EXISTING project (non-clobbering)
+//   scan     overlay the methodology onto an EXISTING project (non-clobbering)
 //   upgrade  bring a methodology project up to this CLI's version (additive + refresh + reindex)
 //   check    run the consistency + freshness checks here
 //   help     usage
@@ -137,10 +137,10 @@ function cmdInit() {
   log("stack — it fills AGENTS.md, narrows conventions, records ADR-003, and sets package.json identity.");
 }
 
-function cmdAdopt() {
+function cmdScan() {
   guardNotInKit();
   if (exists(TARGET, ".specs/config.md"))
-    die("this project already has .specs/config.md — use `specway upgrade` instead of adopt.");
+    die("this project already has .specs/config.md — use `specway upgrade` instead of scan.");
   const added = [];
   for (const d of ADDITIVE_DIRS) added.push(...copyChildrenIfAbsent(d));
   for (const f of ADDITIVE_FILES) if (copyEntryIfAbsent(f)) added.push(f);
@@ -156,7 +156,7 @@ function cmdAdopt() {
 function cmdUpgrade() {
   guardNotInKit();
   if (!exists(TARGET, ".specs/config.md"))
-    die("no .specs/config.md here — this isn't a methodology project. Use `init` or `adopt`.");
+    die("no .specs/config.md here — this isn't a methodology project. Use `init` or `scan`.");
   const from = methodologyVersion(TARGET) || "1.0.0"; // no version section ⇒ predates versioning
   const to = methodologyVersion(KIT_ROOT);
   if (cmp(from, to) >= 0) { log(`Already current at ${from} (CLI is ${to}). Nothing to do.`); return; }
@@ -218,7 +218,7 @@ Usage: npx @lucasfelipe23/specway <command>   (or: node bin/specway.mjs <command
        pin a version: npx @lucasfelipe23/specway@X.Y.Z <command>
 
   init      Scaffold a NEW project here (copy the methodology, clean CHANGELOG, install tooling)
-  adopt     Overlay the methodology onto an EXISTING project (never clobbers your files)
+  scan      Overlay the methodology onto an EXISTING project (never clobbers your files)
   upgrade   Bring a methodology project up to this CLI's version (additive + tooling refresh + reindex)
   check     Run the consistency + freshness checks here
   help      This message
@@ -230,7 +230,7 @@ The CLI does the deterministic file work; run the matching skill afterward for t
 const cmd = process.argv[2];
 switch (cmd) {
   case "init": cmdInit(); break;
-  case "adopt": cmdAdopt(); break;
+  case "scan": cmdScan(); break;
   case "upgrade": cmdUpgrade(); break;
   case "check": cmdCheck(); break;
   case "help": case "--help": case "-h": case undefined: cmdHelp(); break;
