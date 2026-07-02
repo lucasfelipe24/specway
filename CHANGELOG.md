@@ -8,10 +8,21 @@ Generated automatically from `.specs/archive/` via the `update-changelog` skill.
 ## [Unreleased]
 
 ### Changed
+- **Memory scaffold separated from kit's working memory.** CLI now copies
+  memory scaffold files from `.specs/templates/memory/` (new) into the
+  target project's `.specs/memory/`, so the kit's own `.specs/memory/` can
+  accumulate log entries, TRBs, and catalog items without leaking into
+  new projects.
+- CLI command `adopt` renamed to `scan` (removed, not aliased).
+
+---
+
+## [1.3.0] - 2026-07-02
+
+### Changed
 - Project renamed from `spec-driven-tdd-kit` to `@lucasfelipe23/specway` (package) and `specway` (CLI).
 - CLI binary renamed from `spec-kit` to `specway` (`bin/specway.mjs`).
 - Skill `adopt-project` renamed to `scan-project`.
-- CLI command `adopt` renamed to `scan` (removed, not aliased).
 
 ### Removed
 - `.agents/skills/` mirror — CHG-001 implemented and reverted. The kit only copies skills to `.claude/skills/`.
