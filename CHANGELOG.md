@@ -8,6 +8,11 @@ Generated automatically from `.specs/archive/` via the `update-changelog` skill.
 ## [Unreleased]
 
 ### Added
+- **cc-sdd-inspired enhancements (CHG-003).** `--dry-run` on the `specway` CLI (`init`/`scan`/`upgrade`)
+  previews what would be copied, merged, and stamped — writing nothing. **EARS** added as a requirements
+  methodology (`gather-requirements` + template): precise `SHALL` requirements whose acceptance criteria
+  map 1:1 to tests. The feature-spec template gains a **`## Tasks`** (boundary/deps) and
+  **`## File Structure Plan`** section for boundary-first work (consumed by `run-tdd`, one task at a time).
 
 ### Changed
 

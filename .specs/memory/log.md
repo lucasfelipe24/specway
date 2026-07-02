@@ -79,3 +79,18 @@ Template — copy, set today's date, append at the bottom:
 - **Next:** push `feat/methodology-hooks` + open a PR when ready. Deferred hooks (stack-specific TDD
   guard, SessionEnd log breadcrumb) remain in the backlog.
 - **Refs:** CHG-002, requirements 001-methodology-hooks, methodology 1.2.0 → 1.4.0.
+
+## 2026-07-02 — cc-sdd-inspired enhancements, batch 1 (CHG-003)
+
+- **Did:** Analysed gotalab/cc-sdd and landed the three cheap, high-fit ideas: `--dry-run` on the CLI
+  (write-guarded init/scan/upgrade + banner + help + tests), **EARS** as a requirements methodology
+  (`gather-requirements` + requirements template), and a **`## Tasks` (boundary/deps) + `## File
+  Structure Plan`** section in the feature-spec template (read by `run-tdd`, one task at a time).
+  Archived CHG-003; CHANGELOG [Unreleased] updated. Suite now 20 tests.
+- **Learned:** the CLI dry-run only needed write-guards in the shared copy helpers + a banner — the
+  command bodies already compute the "would-happen" list. EARS acceptance criteria map 1:1 to
+  `TEST-NN`, reinforcing the traceability the checker already enforces.
+- **Next:** the flagship cc-sdd idea — an autonomous `implement-spec` loop (per-task fresh subagent,
+  independent reviewer, auto-debug) — gets its own full-path spec + design (003). At the next release,
+  bump package + methodology version together (coupled for the kit; cut-release enforces it).
+- **Refs:** CHG-003 (archived; lightweight path, no requirements doc).

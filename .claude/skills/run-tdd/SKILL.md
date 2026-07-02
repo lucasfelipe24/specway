@@ -33,7 +33,9 @@ Ensures tests are always written before implementation code.
 ### Step 1: Read the Spec
 
 Read the active spec's `## Tests` section (or `## Regression Test` for bugfixes). Extract test case
-IDs (TEST-01, …), types (unit/integration/e2e), expected behaviors, and test file locations.
+IDs (TEST-01, …), types (unit/integration/e2e), expected behaviors, and test file locations. If the
+spec has a `## Tasks` section, implement it **one task at a time in dependency order** (respecting each
+task's `_Boundary:_`), running the full Red→Green→Refactor cycle per task rather than all at once.
 
 ### Step 2: Set Up Test Infrastructure
 

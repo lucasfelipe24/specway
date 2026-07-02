@@ -48,6 +48,7 @@ How will we know this is solved? Be specific and measurable.
 | **Use Cases** | Complex interactions, multiple actors | Section 4.2 |
 | **Job Stories** | Situational/task-driven features | Section 4.3 |
 | **BDD Scenarios** | Behavior-driven, acceptance testing | Section 4.4 |
+| **EARS** | Precise, testable "shall" requirements (map 1:1 to tests) | Section 4.5 |
 
 ---
 
@@ -112,6 +113,25 @@ Feature: <feature name>
     When <action>
     Then <expected result>
 ```
+
+### 4.5 EARS Requirements
+
+> EARS (Easy Approach to Requirements Syntax) — precise, low-ambiguity requirements whose acceptance
+> criteria map 1:1 to test cases. Pick the pattern that fits each requirement:
+
+| Pattern | Template |
+|---|---|
+| **Ubiquitous** (always true) | The `<system>` SHALL `<response>`. |
+| **Event-driven** | WHEN `<trigger>`, the `<system>` SHALL `<response>`. |
+| **State-driven** | WHILE `<state>`, the `<system>` SHALL `<response>`. |
+| **Unwanted behavior** | IF `<condition>`, THEN the `<system>` SHALL `<response>`. |
+| **Optional feature** | WHERE `<feature is included>`, the `<system>` SHALL `<response>`. |
+| **Complex** | Combine the above (e.g. WHILE `<state>`, WHEN `<trigger>`, the `<system>` SHALL `<response>`). |
+
+| ID | EARS Requirement | Acceptance Criteria |
+|---|---|---|
+| EARS-01 | WHEN `<trigger>`, the system SHALL `<response>` | 1. `<criterion>` |
+| EARS-02 | IF `<error condition>`, THEN the system SHALL `<handling>` | 1. `<criterion>` |
 
 ---
 

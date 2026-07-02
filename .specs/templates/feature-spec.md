@@ -64,6 +64,24 @@ What is explicitly NOT included — avoid scope creep.
 - <case 1>: <how handled>
 - <case 2>: <how handled>
 
+## Tasks
+
+> Ordered, boundary-first implementation tasks. `_Boundary:_` = files/modules this task may touch
+> (keeps parallel or agent work from colliding); `_Depends:_` = task ids that must land first. The
+> `run-tdd` skill (and a future autonomous implement loop) consume this list one task at a time.
+
+- [ ] T1 — <what> _Boundary:_ `<path/glob>` _Depends:_ —
+- [ ] T2 — <what> _Boundary:_ `<path/glob>` _Depends:_ T1
+
+## File Structure Plan
+
+> The files this change will create / modify / delete, decided up front (boundary-first) so the diff
+> stays scoped and a reviewer sees the surface area before any code is written.
+
+- **create** `<path>` — <purpose>
+- **modify** `<path>` — <what changes>
+- **delete** `<path>` — <why>
+
 ## Risks
 
 | Risk | Likelihood | Impact | Mitigation |

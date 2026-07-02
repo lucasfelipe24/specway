@@ -24,6 +24,7 @@ import { mergeHookSettings } from "../scripts/merge-hooks.mjs";
 
 const KIT_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const TARGET = process.cwd();
+const DRY = process.argv.includes("--dry-run"); // preview mode: compute + report, but write nothing
 
 const log = (m) => process.stdout.write(m + "\n");
 const die = (m) => { process.stderr.write(`specway: ${m}\n`); process.exit(1); };
@@ -41,8 +42,7 @@ function guardNotInKit() {
 function copyEntryIfAbsent(relPath) {
   const src = rel(KIT_ROOT, relPath), dst = rel(TARGET, relPath);
   if (existsSync(dst)) return false;
-  mkdirSync(dirname(dst), { recursive: true });
-  cpSync(src, dst, { recursive: true });
+  if (!DRY) { mkdirSync(dirname(dst), { recursive: true }); cpSync(src, dst, { recursive: true }); }
   return true;
 }
 function copyChildrenIfAbsent(relDir) {
@@ -56,11 +56,11 @@ function copyChildrenIfAbsent(relDir) {
 function copyForce(relPath) {
   const src = rel(KIT_ROOT, relPath), dst = rel(TARGET, relPath);
   if (!existsSync(src)) return false;
-  mkdirSync(dirname(dst), { recursive: true });
-  cpSync(src, dst, { recursive: true });
+  if (!DRY) { mkdirSync(dirname(dst), { recursive: true }); cpSync(src, dst, { recursive: true }); }
   return true;
 }
 function ensureGitkeep(relDir) {
+  if (DRY) return;
   const d = rel(TARGET, relDir);
   mkdirSync(d, { recursive: true });
   const k = join(d, ".gitkeep");
@@ -78,8 +78,7 @@ function copyMemoryScaffoldIfAbsent() {
     const src = rel(tplDir, name);
     const dst = rel(TARGET, ".specs/memory", name);
     if (existsSync(dst)) continue;
-    mkdirSync(dirname(dst), { recursive: true });
-    cpSync(src, dst, { recursive: true });
+    if (!DRY) { mkdirSync(dirname(dst), { recursive: true }); cpSync(src, dst, { recursive: true }); }
     added.push(join(".specs/memory", name));
   }
   return added;
@@ -104,9 +103,11 @@ function methodologyVersion(base) {
   return m ? m[1] : null;
 }
 function regenerateIndex() {
+  if (DRY) return;
   try { execFileSync("node", [rel(TARGET, "scripts/update-skills-index.mjs")], { cwd: TARGET, stdio: "ignore" }); } catch {}
 }
 function resetChangelog() {
+  if (DRY) return;
   const tpl = rel(KIT_ROOT, ".specs/templates/changelog-template.md");
   if (existsSync(tpl)) writeFileSync(rel(TARGET, "CHANGELOG.md"), readFileSync(tpl, "utf8"));
 }
@@ -121,7 +122,7 @@ function mergeSettingsHooks() {
     const kit = JSON.parse(readFileSync(kitPath, "utf8"));
     const project = JSON.parse(readFileSync(dstPath, "utf8"));
     const { settings, changed } = mergeHookSettings(kit, project);
-    if (changed) writeFileSync(dstPath, JSON.stringify(settings, null, 2) + "\n");
+    if (changed && !DRY) writeFileSync(dstPath, JSON.stringify(settings, null, 2) + "\n");
     return changed;
   } catch {
     return false;
@@ -141,7 +142,8 @@ function writeBaselineIfCrossing(from, to) {
   const dirs = isDir(archiveDir)
     ? readdirSync(archiveDir).filter((d) => d !== ".gitkeep" && isDir(join(archiveDir, d)))
     : [];
-  writeFileSync(
+  if (!DRY)
+    writeFileSync(
     baselinePath,
     JSON.stringify(
       {
@@ -159,6 +161,7 @@ function writeBaselineIfCrossing(from, to) {
 // --- commands ---
 function cmdInit() {
   guardNotInKit();
+  if (DRY) log("── DRY RUN — previewing; no files will be written ──\n");
   if (readdirSync(TARGET).some((f) => ![".git"].includes(f)))
     log("note: target dir is not empty — copying methodology files alongside (existing files kept).");
   const added = [];
@@ -174,10 +177,12 @@ function cmdInit() {
   log(`✓ skills index generated; tooling installed (v${methodologyVersion(KIT_ROOT)})`);
   log("\nNext: run the init-project skill (say \"iniciar projeto\" / \"start project\") to configure the");
   log("stack — it fills AGENTS.md, narrows conventions, records ADR-003, and sets package.json identity.");
+  if (DRY) log("\n── DRY RUN complete — nothing was written. Re-run without --dry-run to apply. ──");
 }
 
 function cmdScan() {
   guardNotInKit();
+  if (DRY) log("── DRY RUN — previewing; no files will be written ──\n");
   if (exists(TARGET, ".specs/config.md"))
     die("this project already has .specs/config.md — use `specway upgrade` instead of scan.");
   const added = [];
@@ -193,6 +198,7 @@ function cmdScan() {
   if (scanMerged) log("✓ merged kit hooks into your existing .claude/settings.json (add-only)");
   log("\nNext: run the scan-project skill (say \"scan project\" / \"adopt methodology\") to detect");
   log("the stack, merge methodology sections into your AGENTS.md, and draft the memory docs from code.");
+  if (DRY) log("\n── DRY RUN complete — nothing was written. Re-run without --dry-run to apply. ──");
 }
 
 function cmdUpgrade() {
@@ -203,6 +209,7 @@ function cmdUpgrade() {
   const to = methodologyVersion(KIT_ROOT);
   if (cmp(from, to) >= 0) { log(`Already current at ${from} (CLI is ${to}). Nothing to do.`); return; }
 
+  if (DRY) log("── DRY RUN — previewing; no files will be written ──\n");
   log(`Upgrading methodology ${from} → ${to}`);
   const added = [];
   for (const d of ADDITIVE_DIRS) added.push(...copyChildrenIfAbsent(d));
@@ -222,7 +229,7 @@ function cmdUpgrade() {
   } else {
     cfg = cfg.replace(/(- \*\*URL:\*\*[^\n]*\n)/, `$1\n## Methodology Version\n\n- **Version:** ${to}\n`);
   }
-  writeFileSync(cfgPath, cfg);
+  if (!DRY) writeFileSync(cfgPath, cfg);
 
   const grandfathered = writeBaselineIfCrossing(from, to);
 
@@ -237,6 +244,7 @@ function cmdUpgrade() {
   log("  • reconcile files you customized that this refresh overwrote (git diff shows them)");
   log("  • record the upgrade in .specs/memory/log.md");
   log("\nThen: node scripts/check-consistency.mjs  (new checks stay dormant until you have the artifacts).");
+  if (DRY) log("\n── DRY RUN complete — nothing was written. Re-run without --dry-run to apply. ──");
 }
 
 function cmdCheck() {
@@ -267,6 +275,9 @@ Usage: npx @lucasfelipe23/specway <command>   (or: node bin/specway.mjs <command
   upgrade   Bring a methodology project up to this CLI's version (additive + tooling refresh + reindex)
   check     Run the consistency + freshness checks here
   help      This message
+
+Flags:
+  --dry-run   Preview what init/scan/upgrade would copy/merge/stamp — writes nothing.
 
 The CLI does the deterministic file work; run the matching skill afterward for the judgment parts
 (stack config, memory drafting, AGENTS merges). Outward-facing steps (git, releases) are never done.`);

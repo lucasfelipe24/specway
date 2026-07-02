@@ -52,8 +52,8 @@ Ask sequentially:
 
 ### Step 3: Choose Methodology
 
-Present and let the engineer choose: User Stories, Use Cases, Job Stories, BDD/Gherkin, or Hybrid.
-Mark the choice in `## 3. Methodology` and guide the matching section (4.1–4.4).
+Present and let the engineer choose: User Stories, Use Cases, Job Stories, BDD/Gherkin, EARS, or Hybrid.
+Mark the choice in `## 3. Methodology` and guide the matching section (4.1–4.5).
 
 ### Step 4: Elicit Functional Requirements
 
@@ -61,6 +61,8 @@ Mark the choice in `## 3. Methodology` and guide the matching section (4.1–4.4
 - **Use Cases:** actor, pre-condition, main flow, alternatives, exceptions → `### 4.2`.
 - **Job Stories:** situation, motivation, expected outcome → `### 4.3`.
 - **BDD:** feature + Given/When/Then scenarios + edge cases → `### 4.4`.
+- **EARS:** precise `SHALL` requirements by pattern (Ubiquitous / WHEN / WHILE / IF-THEN / WHERE) whose
+  acceptance criteria map 1:1 to test cases → `### 4.5`.
 
 ### Step 5: Functional Requirements Table
 
