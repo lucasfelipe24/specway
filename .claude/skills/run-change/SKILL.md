@@ -60,7 +60,10 @@ If the change is non-trivial, do not improvise a spec here — run the `gather-r
 produce `.specs/requirements/<nnn>-<slug>/`, then create the full `changes/<nnn>-<slug>/spec.md`
 from `feature-spec.md`. Before `run-tdd`, run the `review-alignment` skill to confirm the spec
 actually covers every `REQ-NN` from the requirements doc — this is the requirements→spec transition
-where specs silently drift. Only on an `aligned` verdict proceed to `run-tdd`.
+where specs silently drift. Only on an `aligned` verdict proceed to `run-tdd`. For a spec that carries
+a `## Tasks` section (multi-task), you may drive implementation autonomously with the `implement-spec`
+skill instead of a manual `run-tdd` — it runs the tasks one at a time with independent review and
+auto-debug, halting at real failures.
 
 ## Output
 

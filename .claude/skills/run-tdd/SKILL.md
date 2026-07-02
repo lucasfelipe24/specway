@@ -145,3 +145,5 @@ files → test passes (Green) → full suite (no regressions) → update checkli
 - `.specs/templates/feature-spec.md`, `.specs/templates/bugfix-spec.md`, `.specs/templates/test-spec.md`
 - `.claude/skills/review-alignment/SKILL.md` — alignment gate required before archiving a spec
 - `.claude/skills/update-changelog/SKILL.md` — run after archiving a spec
+- `.claude/skills/implement-spec/SKILL.md` — the autonomous variant: drives a spec's `## Tasks` one at
+  a time with independent review + auto-debug (Claude Code accelerator over this cycle)

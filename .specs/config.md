@@ -43,6 +43,18 @@ the delta. Bump it (minor for additive structure, major for breaking layout chan
 
 ---
 
+## Implement
+
+Settings for the autonomous `implement-spec` loop (see `.claude/skills/implement-spec/`).
+
+- **Reviewer votes (N):** 3   (a task is accepted on a majority ⌈N/2⌉ of independent reviewers)
+- **Feature-flag mode:** off  (when on, each task's Green ships behind the project's feature flag)
+
+> `implement-spec` is a Claude-Code accelerator over `run-tdd`. These values tune it; `run-tdd` + CI +
+> the alignment gate remain the enforcement regardless.
+
+---
+
 ## Skill Format
 
 Skills are discovered by both opencode and Claude Code from `.claude/skills/<name>/SKILL.md`

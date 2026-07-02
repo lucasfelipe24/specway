@@ -105,12 +105,12 @@ implement-spec <spec-dir>:
 
 > Boundary-first. `_Depends:_` gates order; `_Boundary:_` scopes each task's writes.
 
-- [ ] T1 — `implement-spec` SKILL.md: the full loop (dep-order iteration, implementer, review, auto-debug, halt, checkpoint, degradation). _Boundary:_ `.claude/skills/implement-spec/` _Depends:_ T2
+- [x] T1 — `implement-spec` SKILL.md: the full loop (dep-order iteration, implementer, review, auto-debug, halt, checkpoint, degradation). _Boundary:_ `.claude/skills/implement-spec/` _Depends:_ T2
 - [x] T2 — `scripts/spec-tasks.mjs`: parse `## Tasks` (id, `_Boundary:_`, `_Depends:_`, `[ ]/[x]`) + select next-actionable; bulletproof. _Boundary:_ `scripts/spec-tasks.mjs` _Depends:_ —
-- [ ] T3 — reviewer (multi-vote, diverse lenses) + auto-debug subagent prompt templates in the skill. _Boundary:_ `.claude/skills/implement-spec/` _Depends:_ T1
-- [ ] T4 — `## Implement` config block (REVIEWER_VOTES, FEATURE_FLAG_MODE) + skill reads it. _Boundary:_ `.specs/config.md`, `.claude/skills/implement-spec/` _Depends:_ T1
-- [ ] T5 — optional multi-spec/roadmap cross-review step. _Boundary:_ `.claude/skills/implement-spec/` _Depends:_ T1
-- [ ] T6 — routing: `run-change` sends large multi-task specs here; `run-tdd` cross-references it; regenerate INDEX. _Boundary:_ `.claude/skills/run-change/SKILL.md`, `.claude/skills/run-tdd/SKILL.md` _Depends:_ T1
+- [x] T3 — reviewer (multi-vote, diverse lenses) + auto-debug subagent prompt templates in the skill. _Boundary:_ `.claude/skills/implement-spec/` _Depends:_ T1
+- [x] T4 — `## Implement` config block (REVIEWER_VOTES, FEATURE_FLAG_MODE) + skill reads it. _Boundary:_ `.specs/config.md`, `.claude/skills/implement-spec/` _Depends:_ T1
+- [x] T5 — optional multi-spec/roadmap cross-review step. _Boundary:_ `.claude/skills/implement-spec/` _Depends:_ T1
+- [x] T6 — routing: `run-change` sends large multi-task specs here; `run-tdd` cross-references it; regenerate INDEX. _Boundary:_ `.claude/skills/run-change/SKILL.md`, `.claude/skills/run-tdd/SKILL.md` _Depends:_ T1
 - [x] T7 — tests for `spec-tasks.mjs` (parse, dependency order, done-detection, no-Tasks). _Boundary:_ `test/spec-tasks.test.mjs` _Depends:_ T2
 
 ## File Structure Plan
@@ -180,8 +180,8 @@ implement-spec <spec-dir>:
 
 - [x] Tests written BEFORE implementation (Red) — for the parser (T2/T7)
 - [x] All tests passing (Green — parser; suite now 24)
-- [ ] Skill has the 6 canonical sections; `check-consistency` + skills index green (T1)
-- [ ] Degradation path documented (no Workflow tool → run-tdd baseline) (T1)
+- [x] Skill has the 6 canonical sections; `check-consistency` + skills index green (16 skills)
+- [x] Degradation path documented (no Workflow tool → run-tdd baseline) (T1 Step 6)
 - [x] `spec-tasks.mjs` wired (`files[]` + `TOOLING` + alias)
 - [ ] Dogfood: run `implement-spec` on a real small spec end-to-end before archiving
 - [x] No regression in the existing tests (suite now 24)
@@ -193,3 +193,18 @@ implement-spec <spec-dir>:
 - Resolved by the maintainer (2026-07-02): **Workflow-tool orchestration** (CC-only) and **N=3**
   reviewers (majority 2/3; lenses: correctness / boundary-and-scope / test-quality).
 - Approved; implementing task-by-task in dependency order via `run-tdd` (T2 parser first).
+
+## Implementation Notes
+
+> Checkpoint log (dogfooding the loop's own per-task note-taking).
+
+- **T2/T7 (parser):** implemented via TDD first (no deps). Learned: task lines whose *description*
+  contains the literal `_Boundary:_`/`_Depends:_` markers (this very spec) fooled a naive left-most
+  match — fixed by matching the **right-most** annotations (`lastIndexOf`), so the parser reads even its
+  own meta-spec. 4 tests; wired to `files[]`/`TOOLING` + `npm run tasks`.
+- **T1/T3/T4/T5/T6 (skill + config + routing):** the loop is authored as a **Workflow** (tasks
+  sequential for resumability/deps; N=3 reviewers fanned out concurrently within each task, distinct
+  lenses). Config `## Implement` (REVIEWER_VOTES=3, FEATURE_FLAG_MODE=off) ships in `config.md`.
+  `run-change`/`run-tdd` now point large multi-task specs at `implement-spec`. Skills index → 16.
+- **Remaining acceptance:** an end-to-end **dogfood** run of `implement-spec` on a real multi-task spec
+  (spawns the implementer + 3 reviewers + verify) before archiving CHG-004.
