@@ -66,6 +66,24 @@ function ensureGitkeep(relDir) {
   if (!existsSync(k)) writeFileSync(k, "");
 }
 
+// Memory scaffold: copied from .specs/templates/memory/ (source of truth for clean
+// scaffold files) into the target's .specs/memory/. The kit's own .specs/memory/ may
+// diverge (log entries, TRB records, catalog items) without leaking into new projects.
+function copyMemoryScaffoldIfAbsent() {
+  const tplDir = rel(KIT_ROOT, ".specs/templates/memory");
+  if (!isDir(tplDir)) return [];
+  const added = [];
+  for (const name of readdirSync(tplDir)) {
+    const src = rel(tplDir, name);
+    const dst = rel(TARGET, ".specs/memory", name);
+    if (existsSync(dst)) continue;
+    mkdirSync(dirname(dst), { recursive: true });
+    cpSync(src, dst, { recursive: true });
+    added.push(join(".specs/memory", name));
+  }
+  return added;
+}
+
 // Kit-owned tooling: always refreshed to this version (projects should not fork these).
 const TOOLING = [
   "scripts/check-consistency.mjs", "scripts/update-changelog.mjs", "scripts/update-skills-index.mjs",
@@ -73,7 +91,7 @@ const TOOLING = [
   ".specs/methodology.md", // kit-owned methodology rules imported by AGENTS.md — refreshed wholesale
 ];
 // Additive scaffold: copied only when absent (never clobbers project content).
-const ADDITIVE_DIRS = [".claude/skills", ".specs/templates", ".specs/memory", ".specs/shared"];
+const ADDITIVE_DIRS = [".claude/skills", ".specs/templates", ".specs/shared"];
 const ADDITIVE_FILES = [".claude/settings.json", ".specs/config.md", "AGENTS.md", "CLAUDE.md", "METHODOLOGY.md"];
 
 function methodologyVersion(base) {
@@ -125,6 +143,7 @@ function cmdInit() {
     log("note: target dir is not empty — copying methodology files alongside (existing files kept).");
   const added = [];
   for (const d of ADDITIVE_DIRS) added.push(...copyChildrenIfAbsent(d));
+  added.push(...copyMemoryScaffoldIfAbsent());
   for (const f of ADDITIVE_FILES) if (copyEntryIfAbsent(f)) added.push(f);
   for (const t of TOOLING) copyForce(t);
   for (const g of [".specs/changes", ".specs/archive", ".specs/requirements"]) ensureGitkeep(g);
@@ -143,6 +162,7 @@ function cmdScan() {
     die("this project already has .specs/config.md — use `specway upgrade` instead of scan.");
   const added = [];
   for (const d of ADDITIVE_DIRS) added.push(...copyChildrenIfAbsent(d));
+  added.push(...copyMemoryScaffoldIfAbsent());
   for (const f of ADDITIVE_FILES) if (copyEntryIfAbsent(f)) added.push(f);
   for (const t of TOOLING) copyForce(t);
   for (const g of [".specs/changes", ".specs/archive", ".specs/requirements"]) ensureGitkeep(g);
@@ -164,6 +184,7 @@ function cmdUpgrade() {
   log(`Upgrading methodology ${from} → ${to}`);
   const added = [];
   for (const d of ADDITIVE_DIRS) added.push(...copyChildrenIfAbsent(d));
+  added.push(...copyMemoryScaffoldIfAbsent());
   for (const f of ADDITIVE_FILES) if (copyEntryIfAbsent(f)) added.push(f);
   let refreshed = 0;
   for (const t of TOOLING) if (copyForce(t)) refreshed++;
