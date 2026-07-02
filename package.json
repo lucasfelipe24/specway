@@ -1,6 +1,6 @@
 {
   "name": "@lucasfelipe23/specway",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Agent-ready starter kit: spec-driven + TDD methodology with discoverable skills and a consistency checker.",
   "license": "MIT",
   "type": "module",

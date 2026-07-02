@@ -17,6 +17,22 @@ Generated automatically from `.specs/archive/` via the `update-changelog` skill.
 
 ---
 
+## [1.5.1] - 2026-07-02
+
+### Added
+
+### Changed
+- **Renamed "elicitation" → "gathering" / "levantamento".** The academic term was replaced across the
+  docs and the `gather-requirements` skill (Purpose, step headings, and triggers — now
+  `collect requirements` / `coletar requisitos`, distinct from the existing `gather` / `levantar`),
+  aligning with the skill name and natural pt-BR usage.
+
+### Fixed
+
+### Removed
+
+---
+
 ## [1.5.0] - 2026-07-02
 
 ### Added
