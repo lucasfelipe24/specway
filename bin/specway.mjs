@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-// spec-kit — the deterministic "hands" of the methodology. Run via:
-//   npx github:lucasfelipe24/sdd-kit <command>            (default branch)
-//   npx github:lucasfelipe24/sdd-kit#vX.Y.Z <command>     (pin a released version)
+// specway — the deterministic "hands" of the methodology. Run via:
+//   npx @lucasfelipe23/specway <command>                     (latest from npm)
+//   npx @lucasfelipe23/specway@X.Y.Z <command>               (pin a version)
 // npx fetches the kit to run this file, so the CLI copies files from its OWN location (KIT_ROOT)
 // into the target project (CWD) — no separate clone. It does the mechanical file work; the agent
-// skills (init-project, adopt-project, upgrade-methodology) do the judgment (stack questions,
+// skills (init-project, scan-project, upgrade-methodology) do the judgment (stack questions,
 // memory drafting, AGENTS merges). Each command prints which skill to run next.
 //
 // Commands:
@@ -25,7 +25,7 @@ const KIT_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const TARGET = process.cwd();
 
 const log = (m) => process.stdout.write(m + "\n");
-const die = (m) => { process.stderr.write(`spec-kit: ${m}\n`); process.exit(1); };
+const die = (m) => { process.stderr.write(`specway: ${m}\n`); process.exit(1); };
 const rel = (...p) => join(...p);
 const exists = (base, p) => existsSync(rel(base, p));
 const isDir = (p) => existsSync(p) && statSync(p).isDirectory();
@@ -140,7 +140,7 @@ function cmdInit() {
 function cmdAdopt() {
   guardNotInKit();
   if (exists(TARGET, ".specs/config.md"))
-    die("this project already has .specs/config.md — use `spec-kit upgrade` instead of adopt.");
+    die("this project already has .specs/config.md — use `specway upgrade` instead of adopt.");
   const added = [];
   for (const d of ADDITIVE_DIRS) added.push(...copyChildrenIfAbsent(d));
   for (const f of ADDITIVE_FILES) if (copyEntryIfAbsent(f)) added.push(f);
@@ -149,7 +149,7 @@ function cmdAdopt() {
   if (!exists(TARGET, "CHANGELOG.md")) resetChangelog(); // only create if the project has none
   regenerateIndex();
   log(`✓ overlaid ${added.length} methodology paths (existing project files untouched)`);
-  log("\nNext: run the adopt-project skill (say \"adotar metodologia\" / \"adopt methodology\") to detect");
+  log("\nNext: run the scan-project skill (say \"scan project\" / \"adopt methodology\") to detect");
   log("the stack, merge methodology sections into your AGENTS.md, and draft the memory docs from code.");
 }
 
@@ -212,10 +212,10 @@ function cmdCheck() {
 }
 
 function cmdHelp() {
-  log(`spec-kit — methodology CLI (v${methodologyVersion(KIT_ROOT) || "?"})
+  log(`specway — methodology CLI (v${methodologyVersion(KIT_ROOT) || "?"})
 
-Usage: npx github:lucasfelipe24/sdd-kit <command>   (or: node bin/spec-kit.mjs <command>)
-       pin a released version for reproducibility: ...sdd-kit#vX.Y.Z <command>
+Usage: npx @lucasfelipe23/specway <command>   (or: node bin/specway.mjs <command>)
+       pin a version: npx @lucasfelipe23/specway@X.Y.Z <command>
 
   init      Scaffold a NEW project here (copy the methodology, clean CHANGELOG, install tooling)
   adopt     Overlay the methodology onto an EXISTING project (never clobbers your files)
@@ -234,5 +234,5 @@ switch (cmd) {
   case "upgrade": cmdUpgrade(); break;
   case "check": cmdCheck(); break;
   case "help": case "--help": case "-h": case undefined: cmdHelp(); break;
-  default: die(`unknown command '${cmd}'. Run \`spec-kit help\`.`);
+  default: die(`unknown command '${cmd}'. Run \`specway help\`.`);
 }

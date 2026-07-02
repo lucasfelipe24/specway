@@ -5,7 +5,7 @@ description: >-
   doc sections into AGENTS.md, reconcile overwritten tooling, and adapt existing project artifacts to
   new/changed conventions (e.g. give a troubleshooting.md TRB ids, add traceability links). Use when
   the user says "reconcile upgrade", "ajustar upgrade", "ajustar arquivos da metodologia", "finalizar
-  upgrade", "adaptar metodologia" or right after running `spec-kit upgrade` / the upgrade-methodology
+  upgrade", "adaptar metodologia" or right after running `specway upgrade` / the upgrade-methodology
   skill. Drives interactive edits, never git/outward-facing steps, and ends on a green check.
 metadata:
   version: 1.0.0
@@ -15,7 +15,7 @@ metadata:
 
 ## Purpose
 
-Finish a methodology upgrade. The deterministic step (`spec-kit upgrade` CLI, or the copy phase of
+Finish a methodology upgrade. The deterministic step (`specway upgrade` CLI, or the copy phase of
 `upgrade-methodology`) brings in new/refreshed files but cannot make judgment calls. This skill is
 that judgment phase: it reads which methodology version(s) were just applied, then walks the user
 through merging new documentation, reconciling anything the refresh overwrote, and **adapting the
@@ -89,7 +89,7 @@ Versions notes and the new files, and propose it.
 
 ### Step 5: Validate
 
-Run `node scripts/check-consistency.mjs` (or `spec-kit check`). Resolve each violation with the user,
+Run `node scripts/check-consistency.mjs` (or `specway check`). Resolve each violation with the user,
 re-running until it exits `0`. New checks stay dormant until their artifacts exist, so a green result
 means the adaptations are complete.
 
@@ -98,7 +98,7 @@ means the adaptations are complete.
 Append a dated entry to `.specs/memory/log.md` recording the upgrade as provenance: **Did** "methodology
 upgrade `<from> → <to>`", **Learned** the delta summary (what conventions changed), **Next** any
 follow-up, **Refs** the new version. This is the per-project audit trail of when and what was upgraded —
-the reproducible apply lives in `spec-kit upgrade`, this is the record that it ran.
+the reproducible apply lives in `specway upgrade`, this is the record that it ran.
 
 ### Step 7: Hand Off the Commit
 
@@ -113,7 +113,7 @@ filled"), the final `check` result, and a reminder to commit.
 
 ## Examples
 
-### Example 1: After `spec-kit upgrade` 1.0.0 → 1.1.0 on a pt-BR repo
+### Example 1: After `specway upgrade` 1.0.0 → 1.1.0 on a pt-BR repo
 
 **User says:** "ajustar os arquivos da metodologia"
 
@@ -132,7 +132,7 @@ run the check (green) → report there was nothing to reconcile.
 ## References
 
 - `.claude/skills/upgrade-methodology/SKILL.md` — the upgrade whose judgment phase this completes
-- `bin/spec-kit.mjs` — the `spec-kit upgrade` CLI that hands off to this skill
+- `bin/specway.mjs` — the `specway upgrade` CLI that hands off to this skill
 - `METHODOLOGY.md## Methodology Versions` — what each version introduced (drives the reconciliation)
 - `.claude/skills/record-troubleshooting/SKILL.md` — the troubleshooting schema adapted in Step 4
 - `.claude/skills/check-consistency/SKILL.md` — the validation gate this ends on

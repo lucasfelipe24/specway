@@ -573,8 +573,8 @@ When starting a new project with this methodology:
 ### Adopting into an existing project
 
 The checklist above is for **greenfield** projects. To add the methodology to a repository that
-**already has code**, do not run `init-project` — run the **`adopt-project`** skill
-(`"adopt methodology"` / `"adotar metodologia"`) from inside the existing repo. It differs from
+**already has code**, do not run `init-project` — run the **`scan-project`** skill
+(`"adopt methodology"` / `"scan project"`) from inside the existing repo. It differs from
 greenfield bootstrap in three ways:
 
 - **Detect, don't ask.** It infers the stack from manifests (`package.json`, `Cargo.toml`,
@@ -597,7 +597,7 @@ There are three distinct situations, each with its own skill — pick by where y
 | Situation | Skill | What it does |
 |---|---|---|
 | **Brand-new project** (nothing yet) | `create-project` → `init-project` | Clone the kit, clean git, ask the 9 stack questions, fill the templates. |
-| **Existing project with code** (no methodology) | `adopt-project` | Detect the stack, overlay the methodology without clobbering, draft memory from real code. |
+| **Existing project with code** (no methodology) | `scan-project` | Detect the stack, overlay the methodology without clobbering, draft memory from real code. |
 | **Project already on the methodology** (older version) | `upgrade-methodology` | Compare the project's methodology version to the kit's latest and apply only the delta, non-destructively. |
 
 The first two **always pull in the current methodology** — they copy `.claude/skills/` and `.specs/`
@@ -617,7 +617,7 @@ project that already uses the methodology, run the **`upgrade-methodology`** ski
   what is missing or outdated** — new files are added, kit-owned tooling/skills are refreshed, and
   methodology sections are *appended* to project-owned docs (`AGENTS.md`) rather than overwriting them.
 - **Never clobbers project content.** Customized files that would collide are placed alongside with a
-  `.kit` suffix for you to reconcile — same golden rule as `adopt-project`.
+  `.kit` suffix for you to reconcile — same golden rule as `scan-project`.
 - **Stamps the new version.** On success it bumps `config.md## Methodology Version` and reports the
   applied delta, so the next upgrade starts from the right baseline.
 
@@ -630,7 +630,7 @@ own product version:
 |---|---|---|
 | **1.0.0** | 2026-06-02 | Initial methodology: requirements → spec → TDD, memory docs (ADRs, conventions, clean-code, component-catalog, glossary), `check-consistency` + `update-changelog`, the core skills. |
 | **1.1.0** | 2026-06-26 | Memory-as-LLM-Wiki: `troubleshooting.md` + `record-troubleshooting`, append-only `log.md`. Two-tier consistency: `review-alignment` skill + requirements↔spec traceability and the blocking alignment gate in `check-consistency`. `upgrade-methodology` skill + methodology versioning. Clean `changelog-template.md` so bootstrapped projects don't inherit the kit's changelog. Generated skills index (`.claude/skills/INDEX.md`) as the single source for the skills catalog. Session continuity: `session-context.mjs` + SessionStart hook + `resume-session` skill ("where you left off"). |
-| **1.2.0** | 2026-06-26 | `spec-kit` CLI (deterministic init/adopt/upgrade/check via npx) + `reconcile-upgrade` skill for the post-upgrade judgment phase. Forward-only baseline (`.specs/baseline.json`) so upgrading a mature repo never fails CI retroactively. Bilingual + groupable troubleshooting schema. **AGENTS.md ↔ methodology split:** kit-owned rules moved to `.specs/methodology.md` (imported by `AGENTS.md`), so upgrades replace one file and never touch the project-owned `AGENTS.md`. |
+| **1.2.0** | 2026-06-26 | `specway` CLI (deterministic init/adopt/upgrade/check via npx) + `reconcile-upgrade` skill for the post-upgrade judgment phase. Forward-only baseline (`.specs/baseline.json`) so upgrading a mature repo never fails CI retroactively. Bilingual + groupable troubleshooting schema. **AGENTS.md ↔ methodology split:** kit-owned rules moved to `.specs/methodology.md` (imported by `AGENTS.md`), so upgrades replace one file and never touch the project-owned `AGENTS.md`. |
 
 ---
 

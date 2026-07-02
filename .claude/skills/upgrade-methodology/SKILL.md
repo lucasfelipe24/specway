@@ -6,7 +6,7 @@ description: >-
   metodologia", "sync methodology", "sincronizar metodologia", "migrar metodologia" or "update
   methodology" inside a repo that already has .specs/ and .claude/skills/. Version-aware: compares the
   project's methodology version to the kit's and adds only what is missing or outdated. Do NOT use to
-  adopt the methodology for the first time (that is adopt-project) or to bootstrap a new project
+  adopt the methodology for the first time (that is scan-project) or to bootstrap a new project
   (create-project / init-project).
 metadata:
   version: 1.0.0
@@ -21,12 +21,12 @@ Bring a project that already uses the methodology up to the sdd-kit's latest ver
 A project set up months ago is frozen at the version it was bootstrapped with; when the kit adds
 skills, templates, checker rules, or memory pages, those projects don't get them automatically. This
 skill closes that gap by comparing the project's methodology version against the kit's latest. It is
-`adopt-project` narrowed to "what changed since you last synced".
+`scan-project` narrowed to "what changed since you last synced".
 
 ## Prerequisites
 
 - You are at the root of a repo that **already uses the methodology** (`.specs/config.md` and
-  `.claude/skills/` exist). If they don't, this is the wrong skill — use `adopt-project` (existing
+  `.claude/skills/` exist). If they don't, this is the wrong skill — use `scan-project` (existing
   code) or `init-project` (new project).
 - `git` and **Node.js** in PATH.
 - The sdd-kit URL — from `.specs/config.md## Repository` (reference it; do not hardcode).
@@ -84,7 +84,7 @@ existed, breaking CI on a mature repo. When upgrading from a version `< 1.1.0`, 
 `.specs/baseline.json` snapshotting the **current** `.specs/archive/*` dirs:
 `{ "methodologyBaseline": "<to>", "grandfatheredArchive": ["<dir>", …] }`. `check-consistency` exempts
 those legacy specs; specs archived from now on must comply. Never overwrite an existing baseline. (The
-`spec-kit upgrade` CLI does this automatically; only do it by hand if upgrading without the CLI.)
+`specway upgrade` CLI does this automatically; only do it by hand if upgrading without the CLI.)
 
 ### Step 5: Stamp the New Version
 
@@ -98,7 +98,7 @@ The copy/refresh above is mechanical. The judgment phase — merging new section
 reconciling any overwritten tooling, and **adapting the project's existing files to conventions the
 new version introduced** (e.g. giving a `troubleshooting.md` `TRB-NN` ids, adding traceability links) —
 is driven by the **`reconcile-upgrade`** skill. Run it now (it is the same phase a user gets after the
-`spec-kit upgrade` CLI). Hand off the `FROM → TO` range so it knows what changed.
+`specway upgrade` CLI). Hand off the `FROM → TO` range so it knows what changed.
 
 ### Step 7: Validate
 
@@ -150,6 +150,6 @@ make no changes, stop.
 - `.specs/config.md` — repository URL and the `## Methodology Version` stamp this skill reads/bumps
 - `METHODOLOGY.md## Methodology Versions` — the per-version changelog of what each upgrade introduces
 - `.claude/skills/reconcile-upgrade/SKILL.md` — the judgment phase this delegates to (Step 6)
-- `.claude/skills/adopt-project/SKILL.md` — first-time adoption (the non-versioned sibling of this skill)
+- `.claude/skills/scan-project/SKILL.md` — first-time adoption (the non-versioned sibling of this skill)
 - `.claude/skills/check-consistency/SKILL.md` — run after upgrading to validate the result
 - `.claude/skills/create-skill/SKILL.md` — how the skills being copied in are structured

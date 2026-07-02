@@ -1,5 +1,6 @@
-# SDD KIT — Spec-Driven + TDD Methodology
+# Specway — Spec-Driven + TDD Methodology
 
+[![npm](https://img.shields.io/npm/v/@lucasfelipe23/specway)](https://www.npmjs.com/package/@lucasfelipe23/specway)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Methodology](https://img.shields.io/badge/methodology-spec--driven_%2B_TDD-blue)](https://github.com/lucasfelipe24/sdd-kit/blob/master/METHODOLOGY.md)
 [![AI Ready](https://img.shields.io/badge/AI_Agent-ready-green)](https://github.com/lucasfelipe24/sdd-kit/blob/master/AGENTS.md)
@@ -9,7 +10,7 @@ Um kit de partida para projetos de software com metodologia integrada de engenha
 
 ## Metodologia
 
-Este sdd-kit implementa um fluxo completo de engenharia de software:
+Este Specway implementa um fluxo completo de engenharia de software:
 
 ```
 IDEA BRUTA
@@ -40,26 +41,26 @@ CONSISTÊNCIA (check-consistency pré-commit)
 
 ### 0. (Mais rápido) Via CLI, sem clonar
 
-Sem clonar nada, rode a CLI direto do GitHub (o `npx` baixa o kit e copia os arquivos para o
+Sem clonar nada, rode a CLI direto do NPM (o `npx` baixa o pacote e copia os arquivos para o
 diretório atual):
 
 ```bash
-npx github:lucasfelipe24/sdd-kit init      # novo projeto (scaffold + CHANGELOG limpo + tooling)
-npx github:lucasfelipe24/sdd-kit adopt     # projeto existente: sobrepõe sem clobber
-npx github:lucasfelipe24/sdd-kit upgrade   # projeto que já usa a metodologia: aplica só o delta
-npx github:lucasfelipe24/sdd-kit check     # roda os checks de consistência aqui
+npx @lucasfelipe23/specway init      # novo projeto (scaffold + CHANGELOG limpo + tooling)
+npx @lucasfelipe23/specway adopt     # projeto existente: sobrepõe sem clobber
+npx @lucasfelipe23/specway upgrade   # projeto que já usa a metodologia: aplica só o delta
+npx @lucasfelipe23/specway check     # roda os checks de consistência aqui
 ```
 
 A CLI faz a parte **determinística** (copiar templates, resetar CHANGELOG, atualizar tooling, regenerar
 o índice, carimbar a versão); depois você roda a **skill** correspondente (`init-project` /
-`adopt-project` / `upgrade-methodology`) para a parte de **julgamento** (stack, memória, merges). Fixe
-uma versão com `#vX.Y.Z` para builds reprodutíveis. Ela nunca executa passos outward-facing (git, releases).
+`scan-project` / `upgrade-methodology`) para a parte de **julgamento** (stack, memória, merges). Fixe
+uma versão com `@X.Y.Z` para builds reprodutíveis. Ela nunca executa passos outward-facing (git, releases).
 
 ### 1. (Recomendado) One-shot com skill
 
 Diga ao seu agente de IA: `"criar novo projeto"` ou `"create new project"`
 
-A skill `create-project` faz **tudo automaticamente**: clona o sdd-kit do GitHub, limpa o `.git`, e inicia o bootstrap interativo com as 9 perguntas da stack. Nenhum comando manual necessário.
+A skill `create-project` faz **tudo automaticamente**: clona o repositório do Specway, limpa o `.git`, e inicia o bootstrap interativo com as 9 perguntas da stack. Nenhum comando manual necessário.
 
 ### 2. (Alternativo) Clone manual
 
@@ -77,9 +78,9 @@ A skill `init-project` fará 9 perguntas sobre sua stack (shell, frontend, backe
 ### Projeto já existente? Adote a metodologia
 
 Se você **já tem um projeto** com código, não use `create-project`/`init-project` (são para projeto
-novo). Dentro do repositório existente, diga: `"adotar metodologia"` ou `"adopt methodology"`.
+novo). Dentro do repositório existente, diga: `"scan project"` ou `"adopt methodology"`.
 
-A skill `adopt-project` **detecta** sua stack (sem perguntas cegas), traz os arquivos da metodologia
+A skill `scan-project` **detecta** sua stack (sem perguntas cegas), traz os arquivos da metodologia
 **sem sobrescrever** nada do projeto, **rascunha** os documentos de memória a partir do seu código
 real (convenções, catálogo de componentes, schema, ADR da stack) e registra um **baseline de
 cobertura forward-only** (TDD obrigatório só para mudanças novas).
@@ -87,11 +88,11 @@ cobertura forward-only** (TDD obrigatório só para mudanças novas).
 ### Já usa a metodologia? Atualize para a versão mais nova
 
 Se o projeto **já adotou** a metodologia e você quer só **as melhorias mais recentes** (novas skills,
-templates, regras do checker, páginas de memória), não rode `adopt-project` de novo. Diga:
+templates, regras do checker, páginas de memória), não rode `scan-project` de novo. Diga:
 `"atualizar metodologia"` ou `"upgrade methodology"`.
 
 A skill `upgrade-methodology` é **versão-aware**: compara a versão da metodologia do projeto
-(`.specs/config.md## Methodology Version`) com a do sdd-kit e aplica **apenas o delta**, de forma
+(`.specs/config.md## Methodology Version`) com a do Specway e aplica **apenas o delta**, de forma
 não-destrutiva — adiciona o que falta, atualiza o tooling do kit, e *anexa* (sem sobrescrever) as
 novas seções aos docs do projeto. Veja o changelog de estrutura em `METHODOLOGY.md## Methodology Versions`.
 
@@ -110,7 +111,7 @@ ou `"mudança rápida"` para o caminho leve.
 │       └── <nome>/SKILL.md         # Uma pasta por skill, com frontmatter name+description
 │
 ├── bin/
-│   └── spec-kit.mjs               # CLI: init | adopt | upgrade | check (npx, sem clonar)
+│   └── specway.mjs               # CLI: init | adopt | upgrade | check (npx, sem clonar)
 │
 ├── scripts/
 │   ├── check-consistency.mjs       # Validador determinístico (roda no CI)
@@ -178,7 +179,7 @@ mão. Os **gatilhos** (trigger phrases) de cada skill estão na *Referência Rá
 
 ## Tecnologias Suportadas
 
-O sdd-kit é agnóstico a tecnologia. Veja `.specs/config.md` para a lista completa de stacks suportadas.
+O Specway é agnóstico a tecnologia. Veja `.specs/config.md` para a lista completa de stacks suportadas.
 
 | Camada | Opções |
 |---|---|
@@ -206,7 +207,7 @@ O sdd-kit é agnóstico a tecnologia. Veja `.specs/config.md` para a lista compl
 |---|---|
 | `"criar novo projeto"` | One-shot: criar projeto do zero (clone + bootstrap) |
 | `"iniciar projeto"` | Bootstrap interativo (projeto já clonado) |
-| `"adotar metodologia"` | Adotar a metodologia em projeto existente (detecta stack, sem clobber) |
+| `"scan project"` | Adotar a metodologia em projeto existente (detecta stack, sem clobber) |
 | `"atualizar metodologia"` | Atualizar um projeto que já usa a metodologia para a versão mais nova (só o delta) |
 | `"mudança rápida"` | Roteador de cerimônia: leve vs completo |
 | `"levantar requisitos"` | Iniciar elicitação de requisitos |

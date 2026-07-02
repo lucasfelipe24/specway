@@ -1,5 +1,5 @@
 ---
-name: adopt-project
+name: scan-project
 description: >-
   Overlay the spec-driven + TDD methodology onto an EXISTING project that already has code. Use when
   the user says "adopt methodology", "adotar metodologia", "add methodology" or "adicionar
