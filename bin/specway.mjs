@@ -20,6 +20,7 @@ import {
 import { join, dirname, resolve, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
+import { mergeHookSettings } from "../scripts/merge-hooks.mjs";
 
 const KIT_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const TARGET = process.cwd();
@@ -87,7 +88,9 @@ function copyMemoryScaffoldIfAbsent() {
 // Kit-owned tooling: always refreshed to this version (projects should not fork these).
 const TOOLING = [
   "scripts/check-consistency.mjs", "scripts/update-changelog.mjs", "scripts/update-skills-index.mjs",
-  "scripts/session-context.mjs", "scripts/cut-release.mjs", ".github/workflows/consistency.yml",
+  "scripts/session-context.mjs", "scripts/cut-release.mjs",
+  "scripts/methodology-guard.mjs", "scripts/methodology-nudge.mjs", // Claude Code hook scripts
+  ".github/workflows/consistency.yml",
   ".specs/methodology.md", // kit-owned methodology rules imported by AGENTS.md — refreshed wholesale
 ];
 // Additive scaffold: copied only when absent (never clobbers project content).
@@ -106,6 +109,23 @@ function regenerateIndex() {
 function resetChangelog() {
   const tpl = rel(KIT_ROOT, ".specs/templates/changelog-template.md");
   if (existsSync(tpl)) writeFileSync(rel(TARGET, "CHANGELOG.md"), readFileSync(tpl, "utf8"));
+}
+// Deliver kit-owned hook wiring to a project whose .claude/settings.json already exists (ADDITIVE_FILES
+// is copy-if-absent, so the file is frozen after first setup — this keyed, add-only merge is the only
+// channel that reaches the installed base). Idempotent; never clobbers user hooks. See merge-hooks.mjs.
+function mergeSettingsHooks() {
+  const kitPath = rel(KIT_ROOT, ".claude/settings.json");
+  const dstPath = rel(TARGET, ".claude/settings.json");
+  if (!existsSync(kitPath) || !existsSync(dstPath)) return false;
+  try {
+    const kit = JSON.parse(readFileSync(kitPath, "utf8"));
+    const project = JSON.parse(readFileSync(dstPath, "utf8"));
+    const { settings, changed } = mergeHookSettings(kit, project);
+    if (changed) writeFileSync(dstPath, JSON.stringify(settings, null, 2) + "\n");
+    return changed;
+  } catch {
+    return false;
+  }
 }
 function cmp(a, b) { return a.localeCompare(b, undefined, { numeric: true }); }
 
@@ -168,7 +188,9 @@ function cmdScan() {
   for (const g of [".specs/changes", ".specs/archive", ".specs/requirements"]) ensureGitkeep(g);
   if (!exists(TARGET, "CHANGELOG.md")) resetChangelog(); // only create if the project has none
   regenerateIndex();
+  const scanMerged = mergeSettingsHooks();
   log(`✓ overlaid ${added.length} methodology paths (existing project files untouched)`);
+  if (scanMerged) log("✓ merged kit hooks into your existing .claude/settings.json (add-only)");
   log("\nNext: run the scan-project skill (say \"scan project\" / \"adopt methodology\") to detect");
   log("the stack, merge methodology sections into your AGENTS.md, and draft the memory docs from code.");
 }
@@ -189,6 +211,7 @@ function cmdUpgrade() {
   let refreshed = 0;
   for (const t of TOOLING) if (copyForce(t)) refreshed++;
   copyEntryIfAbsent(".claude/settings.json");
+  const upgradeMerged = mergeSettingsHooks();
   regenerateIndex();
 
   // Stamp the new methodology version into the project's config.md (project-owned: only this field).
@@ -204,6 +227,7 @@ function cmdUpgrade() {
   const grandfathered = writeBaselineIfCrossing(from, to);
 
   log(`✓ added ${added.length} new paths, refreshed ${refreshed} tooling files, regenerated the skills index`);
+  if (upgradeMerged) log(`✓ merged new kit hooks into your existing .claude/settings.json (add-only, keyed)`);
   log(`✓ stamped .specs/config.md → Methodology Version ${to}`);
   if (grandfathered !== null)
     log(`✓ forward-only baseline written: ${grandfathered} pre-existing archived spec(s) grandfathered (exempt from the new traceability/alignment checks)`);

@@ -55,11 +55,13 @@ copy **only paths that do not already exist** in the target:
 - `.specs/templates/`, `.specs/memory/` (scaffolds), `.specs/shared/`, `.specs/config.md`,
   `.specs/changes/.gitkeep`, `.specs/archive/.gitkeep`, `.specs/requirements/.gitkeep`
 - `scripts/` (`check-consistency.mjs`, `update-changelog.mjs`, `update-skills-index.mjs`,
-  `session-context.mjs`)
+  `session-context.mjs`, `methodology-guard.mjs`, `methodology-nudge.mjs`)
 - `.github/workflows/consistency.yml`
-- `.claude/settings.json` — only if the project has none. If the project already has one, **merge**
-  the `SessionStart` hook into it (don't overwrite its existing hooks/config). The hook runs
-  `node scripts/session-context.mjs`; opencode ignores this file.
+- `.claude/settings.json` — only if the project has none. If the project already has one,
+  **keyed-merge** the kit's hooks into it (add-only, keyed by `matcher`+`command`): extend the
+  `SessionStart` matcher and add the `PreToolUse`/`PostToolUse` guard + nudge hooks, never overwriting
+  the project's own. `specway scan` does this automatically (`scripts/merge-hooks.mjs`); opencode
+  ignores this file.
 
 Do **not** copy the kit's `README.md`, `METHODOLOGY.md`, `CHANGELOG.md`, or `LICENSE` over the
 project's own. The kit's `CHANGELOG.md` is the *kit's* history — never overlay it. If the project has

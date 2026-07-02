@@ -83,6 +83,11 @@ read the Methodology Versions notes):
   specs are exempt. The baseline is a one-time snapshot — it does not grow.
 - **AGENTS.md ↔ methodology split (1.2.0):** handled in Step 2 — extract inline methodology sections
   from `AGENTS.md` into the `@.specs/methodology.md` import.
+- **Methodology hooks (1.3.0):** the kit ships a `PreToolUse` guard + `PostToolUse` nudge
+  (`scripts/methodology-guard.mjs`, `scripts/methodology-nudge.mjs`) and a `compact` `SessionStart`
+  matcher. `specway upgrade` keyed-merges these into an existing `.claude/settings.json` automatically;
+  if you upgraded **without** the CLI, add them keyed by `matcher`+`command` (add-only — never clobber
+  your own hooks). Confirm `.claude/settings.json` carries them and that `matcher` includes `compact`.
 
 For anything the version introduced that isn't listed here, infer the adaptation from the Methodology
 Versions notes and the new files, and propose it.

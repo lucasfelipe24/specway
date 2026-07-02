@@ -7,6 +7,19 @@ Generated automatically from `.specs/archive/` via the `update-changelog` skill.
 
 ## [Unreleased]
 
+### Added
+- **Methodology-enforcing Claude Code hooks (CHG-002)** — methodology version bumped to 1.3.0. A `PreToolUse` guard
+  (`scripts/methodology-guard.mjs`) blocks archiving a requirements-backed spec until its
+  `alignment-review.md` reads `aligned`, and blocks hand-edits/deletes of `.specs/baseline.json`.
+  A `PostToolUse` nudge (`scripts/methodology-nudge.mjs`) flags a `changes/**/spec.md` written with
+  no `## Tests` section and turns a `specway upgrade|scan|init` run into a next-step directive. The
+  `SessionStart` hook now also re-injects the resume summary after `compact`. Hooks are a
+  Claude-Code-only accelerator — CI + skills remain the harness-agnostic enforcement.
+- **Idempotent keyed hook-merge** (`scripts/merge-hooks.mjs`): `specway scan`/`upgrade` deliver new
+  kit hook wiring into an existing (frozen) `.claude/settings.json` — add-only, keyed by
+  `matcher`+`command`, never clobbering the project's own hooks.
+- **`node --test` suite** (`test/`, 14 tests) for the kit scripts; `npm test` runs it.
+
 ### Changed
 - **Memory scaffold separated from kit's working memory.** CLI now copies
   memory scaffold files from `.specs/templates/memory/` (new) into the
@@ -25,7 +38,7 @@ Generated automatically from `.specs/archive/` via the `update-changelog` skill.
 - Skill `adopt-project` renamed to `scan-project`.
 
 ### Removed
-- `.agents/skills/` mirror — CHG-001 implemented and reverted. The kit only copies skills to `.claude/skills/`.
+- `.agents/skills/` mirror — implemented then reverted; the kit only copies skills to `.claude/skills/`.
 
 ---
 

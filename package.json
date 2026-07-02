@@ -11,6 +11,9 @@
     "scripts/session-context.mjs",
     "scripts/update-changelog.mjs",
     "scripts/update-skills-index.mjs",
+    "scripts/methodology-guard.mjs",
+    "scripts/methodology-nudge.mjs",
+    "scripts/merge-hooks.mjs",
     ".claude/settings.json",
     ".claude/skills/",
     ".specs/config.md",
@@ -30,6 +33,7 @@
   },
   "scripts": {
     "check": "node scripts/check-consistency.mjs",
+    "test": "node --test test/*.test.mjs",
     "changelog": "node scripts/update-changelog.mjs",
     "changelog:check": "node scripts/update-changelog.mjs --check",
     "skills:index": "node scripts/update-skills-index.mjs",
