@@ -1,0 +1,21 @@
+{
+  "name": "spec-driven-tdd-sdd-kit",
+  "version": "1.2.0",
+  "description": "Agent-ready starter kit: spec-driven + TDD methodology with discoverable skills and a consistency checker.",
+  "license": "MIT",
+  "type": "module",
+  "private": true,
+  "bin": {
+    "spec-kit": "bin/spec-kit.mjs"
+  },
+  "scripts": {
+    "check": "node scripts/check-consistency.mjs",
+    "changelog": "node scripts/update-changelog.mjs",
+    "changelog:check": "node scripts/update-changelog.mjs --check",
+    "skills:index": "node scripts/update-skills-index.mjs",
+    "skills:index:check": "node scripts/update-skills-index.mjs --check",
+    "session": "node scripts/session-context.mjs",
+    "release": "node scripts/cut-release.mjs",
+    "release:check": "node scripts/cut-release.mjs --check"
+  }
+}
