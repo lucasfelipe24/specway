@@ -45,12 +45,15 @@ function copyEntryIfAbsent(relPath) {
   if (!DRY) { mkdirSync(dirname(dst), { recursive: true }); cpSync(src, dst, { recursive: true }); }
   return true;
 }
-function copyChildrenIfAbsent(relDir) {
+// `skip` excludes named children (e.g. the memory scaffold, which is kit-internal and materialized
+// into .specs/memory/ by copyMemoryScaffoldIfAbsent — copying it into .specs/templates/memory/ too
+// would leave a redundant duplicate in the project).
+function copyChildrenIfAbsent(relDir, skip = []) {
   const srcDir = rel(KIT_ROOT, relDir);
   if (!isDir(srcDir)) return [];
   const added = [];
   for (const name of readdirSync(srcDir))
-    if (copyEntryIfAbsent(join(relDir, name))) added.push(join(relDir, name));
+    if (!skip.includes(name) && copyEntryIfAbsent(join(relDir, name))) added.push(join(relDir, name));
   return added;
 }
 function copyForce(relPath) {
@@ -166,7 +169,7 @@ function cmdInit() {
   if (readdirSync(TARGET).some((f) => ![".git"].includes(f)))
     log("note: target dir is not empty — copying methodology files alongside (existing files kept).");
   const added = [];
-  for (const d of ADDITIVE_DIRS) added.push(...copyChildrenIfAbsent(d));
+  for (const d of ADDITIVE_DIRS) added.push(...copyChildrenIfAbsent(d, d === ".specs/templates" ? ["memory"] : []));
   added.push(...copyMemoryScaffoldIfAbsent());
   for (const f of ADDITIVE_FILES) if (copyEntryIfAbsent(f)) added.push(f);
   for (const t of TOOLING) copyForce(t);
@@ -187,7 +190,7 @@ function cmdScan() {
   if (exists(TARGET, ".specs/config.md"))
     die("this project already has .specs/config.md — use `specway upgrade` instead of scan.");
   const added = [];
-  for (const d of ADDITIVE_DIRS) added.push(...copyChildrenIfAbsent(d));
+  for (const d of ADDITIVE_DIRS) added.push(...copyChildrenIfAbsent(d, d === ".specs/templates" ? ["memory"] : []));
   added.push(...copyMemoryScaffoldIfAbsent());
   for (const f of ADDITIVE_FILES) if (copyEntryIfAbsent(f)) added.push(f);
   for (const t of TOOLING) copyForce(t);
@@ -213,7 +216,7 @@ function cmdUpgrade() {
   if (DRY) log("── DRY RUN — previewing; no files will be written ──\n");
   log(`Upgrading methodology ${from} → ${to}`);
   const added = [];
-  for (const d of ADDITIVE_DIRS) added.push(...copyChildrenIfAbsent(d));
+  for (const d of ADDITIVE_DIRS) added.push(...copyChildrenIfAbsent(d, d === ".specs/templates" ? ["memory"] : []));
   added.push(...copyMemoryScaffoldIfAbsent());
   for (const f of ADDITIVE_FILES) if (copyEntryIfAbsent(f)) added.push(f);
   let refreshed = 0;

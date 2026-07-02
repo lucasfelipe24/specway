@@ -111,3 +111,18 @@ Template — copy, set today's date, append at the bottom:
   the maintainer). This completes the cc-sdd initiative: **all 4 ideas shipped**. At the next release,
   bump package + methodology together and cut `[Unreleased]` (CHG-003 + CHG-004).
 - **Refs:** CHG-004, requirements 003-implement-spec-loop.
+
+## 2026-07-02 — npm packaging leaks fixed (1.5.1)
+
+- **Did:** Removed `.specs/memory/` from `package.json` `files[]` — the kit's own working memory
+  (`log.md` history, troubleshooting, catalog) was shipping to consumers. Nothing reads the kit's
+  `.specs/memory/` (the CLI seeds a project from the separate `.specs/templates/memory/` scaffold,
+  still shipped). Also stopped `init`/`scan`/`upgrade` from duplicating that scaffold into the target's
+  `.specs/templates/memory/` (a `skip` arg on `copyChildrenIfAbsent`), and added
+  `.github/workflows/consistency.yml` to the package so npx-bootstrapped projects get the CI. Regression
+  tests: `test/npm-package.test.mjs` (asserts pack contents) + `test/cli-scaffold.test.mjs`. Suite 27.
+- **Learned:** `files[]` is a whitelist, but it whitelisted the wrong `.specs/` subdir — the scaffold
+  *source* (`templates/memory/`) is what ships, not the kit's *live* memory. Surfaced by the user
+  inspecting the published tarball. Package: 60 → 54 files.
+- **Next:** folded into the unpublished 1.5.1; ready to publish clean.
+- **Refs:** 1.5.1, package.json files[].
