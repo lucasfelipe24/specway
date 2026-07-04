@@ -26,6 +26,17 @@ Generated automatically from `.specs/archive/` via the `update-changelog` skill.
   throwaway dir and scaffolds the **clean template** into the target via `specway init` (which copies only
   the product, never the kit's dev artifacts), so the project starts with an empty spec history **by
   construction** — nothing to purge. `init-project` Step 6 now creates the identity files when absent.
+- **`scan-project` now guarantees an existing `AGENTS.md` gets wired to the methodology.** When a repo
+  already had its own `AGENTS.md`, the overlay could leave it without the `@.specs/methodology.md` import —
+  so the methodology looked installed but was **inert** (Key Rules, change path, skills never loaded). Step 4
+  now merges in the `## Methodology` import (aligned with the AGENTS.md↔methodology split) and verifies it,
+  backed by a new deterministic `check-consistency` guard (*methodology wiring*) that **fails** when a
+  methodology project's `AGENTS.md` lacks the import.
+- **`scan-project` unifies an existing `CLAUDE.md` + `AGENTS.md` instead of losing content.** When both
+  already exist, Step 4 now reads both and folds the project's `CLAUDE.md` instructions **into `AGENTS.md`**
+  (the single source, deduped), then reduces `CLAUDE.md` to the `@AGENTS.md` importer — the two files stop
+  diverging. A companion `check-consistency` guard (*CLAUDE.md wiring*) **fails** when a CLAUDE.md doesn't
+  import `@AGENTS.md`.
 
 ### Removed
 - **The separate `.specs/requirements/` tree.** Its contents move into each change's folder — ending the

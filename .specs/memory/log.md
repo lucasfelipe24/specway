@@ -168,3 +168,20 @@ Template — copy, set today's date, append at the bottom:
 - **Next:** decide git-clone-to-temp vs. `npx @scope/specway init` as the source (repo HEAD vs. npm publish).
   Repo-as-pure-template (removing the kit's own dogfooding from the repo) stays a separate maintainer call.
 - **Refs:** create-project 1.2.0, init-project Step 6, test/npm-package.test.mjs.
+
+## 2026-07-04 — Safeguards: scan-project wires AGENTS.md + unifies CLAUDE.md (adopt path)
+
+- **Did:** Fixed two adopt-path gaps the maintainer flagged. (1) `scan-project` on a repo that already had
+  its own `AGENTS.md` could leave it without the `@.specs/methodology.md` import, so the methodology was
+  inert — rewrote Step 4 to merge the `## Methodology` import (per the 1.2.0 split, not inline rules) and
+  verify it. (2) When a repo had **both** its own `CLAUDE.md` and `AGENTS.md`, the old Step 4 just "ensured
+  the import," risking lost/duplicated content — Step 4 now **reads both, folds CLAUDE.md into AGENTS.md**
+  (single source, deduped) and reduces CLAUDE.md to the `@AGENTS.md` importer. Backed both with deterministic
+  guards in `check-consistency`: Check 8 *methodology wiring* (AGENTS.md imports `@.specs/methodology.md`)
+  and Check 9 *CLAUDE.md wiring* (CLAUDE.md imports `@AGENTS.md`). scan-project → 1.1.0.
+- **Learned:** the imports are the load-bearing part of adoption; the old Step 4 (pre-split wording, no
+  verification) could silently omit the one thing that matters. The real safeguard is deterministic, not
+  skill prose — scan-project/init/reconcile all run `check-consistency` at the end, so they now cannot finish
+  green with a CLAUDE.md/AGENTS.md left un-wired. The chain enforced: CLAUDE.md → @AGENTS.md → @.specs/methodology.md.
+- **Next:** (unchanged) push / release 1.6.0 / archive-004 pending; Direction 2 still the maintainer's call.
+- **Refs:** check-consistency Check 8 + 9, scan-project 1.1.0.

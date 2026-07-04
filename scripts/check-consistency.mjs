@@ -351,6 +351,44 @@ function rel(p) {
   return p.slice(ROOT.length + 1).replace(/\\/g, "/");
 }
 
+// --- Check 8: AGENTS.md wires in the kit-owned methodology (the @.specs/methodology.md import) ---
+// Safeguard for scan-project / init run on a repo that already had its OWN AGENTS.md: without this import
+// the methodology's operational rules (Key Rules, change path, skills, memory model) never load — the
+// methodology looks installed but is inert. Fires only when both files exist (a methodology project), so
+// it is a no-op in a non-methodology repo. Mirrors the AGENTS.md ↔ methodology split (1.2.0).
+function checkMethodologyWiring() {
+  const agents = join(ROOT, "AGENTS.md");
+  const methodology = join(ROOT, ".specs", "methodology.md");
+  if (!existsSync(agents) || !existsSync(methodology))
+    return pass("methodology wiring: no AGENTS.md + methodology.md pair yet (skipped)");
+  if (!/@\.specs\/methodology\.md/.test(readFileSync(agents, "utf8")))
+    return violate(
+      "methodology wiring: AGENTS.md does not import `@.specs/methodology.md` — the methodology rules " +
+        "won't load. Add a `## Methodology` section importing it (scan-project Step 4 / reconcile-upgrade)."
+    );
+  pass("methodology wiring: AGENTS.md imports .specs/methodology.md");
+}
+
+// --- Check 9: CLAUDE.md funnels through AGENTS.md (imports @AGENTS.md) ---
+// Companion to the methodology-wiring check: when a project keeps a CLAUDE.md alongside AGENTS.md, it must
+// import @AGENTS.md so Claude Code and opencode read the SAME single source (AGENTS.md). Fires only in a
+// methodology project that has a CLAUDE.md. Catches a scan/adopt that left a content-rich CLAUDE.md
+// diverging from AGENTS.md instead of unifying the two.
+function checkClaudeImportsAgents() {
+  const claude = join(ROOT, "CLAUDE.md");
+  const agents = join(ROOT, "AGENTS.md");
+  const methodology = join(ROOT, ".specs", "methodology.md");
+  if (!existsSync(claude) || !existsSync(agents) || !existsSync(methodology))
+    return pass("CLAUDE.md wiring: no CLAUDE.md in a methodology project (skipped)");
+  if (!/@AGENTS\.md/.test(readFileSync(claude, "utf8")))
+    return violate(
+      "CLAUDE.md wiring: CLAUDE.md does not import `@AGENTS.md` — Claude Code and opencode would read " +
+        "different instructions. Fold its content into AGENTS.md and reduce CLAUDE.md to `@AGENTS.md` " +
+        "(scan-project Step 4)."
+    );
+  pass("CLAUDE.md wiring: CLAUDE.md imports @AGENTS.md");
+}
+
 // --- Run ---
 checkSkills();
 checkSkillsIndex();
@@ -360,6 +398,8 @@ checkChangelog();
 checkTroubleshooting();
 checkTraceability();
 checkAlignmentGate();
+checkMethodologyWiring();
+checkClaudeImportsAgents();
 
 console.log("Consistency check\n");
 for (const p of passes) console.log(`  OK   ${p}`);

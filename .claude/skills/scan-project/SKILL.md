@@ -8,7 +8,7 @@ description: >-
   docs from the real codebase, and sets a forward-only TDD coverage baseline. Do NOT use on an empty
   project (that is init-project) or to clone a fresh one (create-project).
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 ---
 
 # Scan Project — Add Methodology to an Existing Project
@@ -90,15 +90,41 @@ Use `.specs/config.md## Supported Technologies` for the canonical option names. 
 detected stack and ask the user to confirm or correct it** before writing anything. Then reuse the
 placeholder→value mapping from `init-project` (its Step 2 table) to fill `AGENTS.md`.
 
-### Step 4: Generate AGENTS.md (merge-aware)
+### Step 4: Wire in the Methodology + Generate AGENTS.md (merge-aware)
 
-- **If `AGENTS.md` already exists:** preserve the project's content. **Append** the methodology
-  sections in clearly marked blocks — the stack table (from Step 3), the **Skills** index, the
-  **Choosing the Change Path** rule, **Key Rules**, and **Testing** — and ask for confirmation before
-  merging. Never delete the project's existing guidance.
-- **If it does not exist:** create it from the kit template, filled with the detected stack.
-- **`CLAUDE.md`:** if it exists, ensure it imports `@AGENTS.md`; otherwise create the minimal
-  importer.
+The **non-negotiable** part of adopting the methodology is that `AGENTS.md` **imports the kit-owned
+rules** — a `## Methodology` section whose body is `@.specs/methodology.md`. Without it the methodology
+looks installed but is **inert** (Key Rules, change path, skills, memory model never load). This is the
+gap the safeguard closes: `check-consistency` now **fails** (the *methodology wiring* check) when the
+import is missing — so a scan that leaves an existing `AGENTS.md` un-wired can't pass. Ensure it every time:
+
+- **If `AGENTS.md` already exists (the project's own):** preserve **all** of its content. **Merge in**,
+  in clearly marked blocks and only where missing:
+  1. **The `## Methodology` import** — a `## Methodology` section whose body is `@.specs/methodology.md`
+     (plus a one-line prose pointer, for harnesses that don't expand imports). **This is the safeguard —
+     never skip it.** Do **not** inline Key Rules / change path; they live in the imported kit-owned file.
+  2. The **stack table** (Step 3), a **Commands** table, and a **Testing** section — appended if the
+     project's `AGENTS.md` lacks them.
+  Ask for confirmation before merging. Never delete the project's existing guidance.
+- **If it does not exist:** create it from the kit template (which already carries the import), filled
+  with the detected stack.
+- **`CLAUDE.md` — unify with `AGENTS.md`, never lose content:** the kit model is one source
+  (`AGENTS.md`) with `CLAUDE.md` as a thin importer, so Claude Code and opencode read the same rules.
+  - **Both `CLAUDE.md` and `AGENTS.md` already exist with content:** read **both**, then fold the
+    project's `CLAUDE.md` instructions **into `AGENTS.md`** (the single source) — deduped against what
+    `AGENTS.md` already says, resolving any conflict in the user's favor (ask when unsure). Only then
+    reduce `CLAUDE.md` to the thin importer (`@AGENTS.md` + the standard one-line note). Nothing the
+    project wrote is dropped, and the two files stop diverging.
+  - **Only `CLAUDE.md` exists:** treat its content as the project's instructions — build the unified
+    `AGENTS.md` from it (+ the stack table and the `## Methodology` import), then reduce `CLAUDE.md` to
+    `@AGENTS.md`.
+  - **Neither, or a thin `CLAUDE.md`:** create (or keep) the minimal `@AGENTS.md` importer.
+  Verify: `CLAUDE.md` ends up importing `@AGENTS.md` — the *CLAUDE.md wiring* check in
+  `check-consistency` enforces it.
+
+Then **verify**: run `node scripts/check-consistency.mjs` — the line
+`methodology wiring: AGENTS.md imports .specs/methodology.md` must read **OK**. If it FAILs, the import
+was not merged in — fix `AGENTS.md` before moving on.
 
 ### Step 5: Auto-draft the Memory Docs from the Codebase
 
