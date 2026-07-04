@@ -10,6 +10,18 @@ Generated automatically from `.specs/archive/` via the `update-changelog` skill.
 ### Added
 
 ### Changed
+
+### Fixed
+
+### Removed
+
+---
+
+## [1.6.0] - 2026-07-04
+
+### Added
+
+### Changed
 - **Requirements docs are now co-located inside the change folder** (`.specs/changes/<nnn>-<slug>/requirements.md`)
   and travel into `.specs/archive/` with the spec, so each change is one self-contained, greppable folder
   (requirements + spec + alignment review). `check-consistency` traceability and the alignment gate resolve
