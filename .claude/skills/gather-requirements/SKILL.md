@@ -4,7 +4,7 @@ description: >-
   Guide requirements gathering from a raw idea to a structured requirements document. Use when the
   user says "gather requirements", "levantar requisitos", "collect requirements" or "coletar
   requisitos", or before writing a spec for a non-trivial feature. Supports User Stories, Use Cases,
-  Job Stories and BDD, and writes to .specs/requirements/<nnn>-<slug>/. For trivial changes (typo,
+  Job Stories and BDD, and writes requirements.md into .specs/changes/<nnn>-<slug>/. For trivial changes (typo,
   refactor, dependency bump, simple bugfix) skip this and use the run-change fast-path instead.
 metadata:
   version: 1.1.0
@@ -92,16 +92,19 @@ empty until the spec and tests are created.
 
 ### Step 11: Assign ID and Save
 
-1. Determine the next sequential number from `.specs/requirements/`.
+1. Determine the next sequential number across `.specs/changes/` and `.specs/archive/` (a change keeps
+   its number from requirements through archive, so the number spans both).
 2. Ask for a short kebab-case slug.
-3. Create `.specs/requirements/<nnn>-<slug>/requirements.md`.
+3. Create `.specs/changes/<nnn>-<slug>/requirements.md` — this folder **is** the change; the spec
+   joins it next as a sibling (`spec.md`), and the whole folder travels to `.specs/archive/` when done.
 4. Flag any open questions in `## 15. Appendix`.
 
 ### Step 12: Next Steps
 
 Report the file path, a summary (stakeholders, methodology, REQ counts by priority, dependencies,
-risks), and the next step: create `.specs/changes/<nnn>-<slug>/spec.md` with the same `<nnn>`, then
-run the `review-alignment` skill to verify the spec covers every `REQ-NN` before `run-tdd`. Each
+risks), and the next step: add `spec.md` as a sibling in the same `.specs/changes/<nnn>-<slug>/`
+folder, then run the `review-alignment` skill to verify the spec covers every `REQ-NN` before
+`run-tdd`. Each
 `REQ-NN` defined here is a contract the spec must trace back to and honor.
 
 ## Output
@@ -119,7 +122,7 @@ After completing the process, report:
 **User says:** "levantar requisitos para um sistema de login"
 
 **Agent should:** gather the problem → stakeholders → choose User Stories → write stories + acceptance
-criteria → extract REQ-01/02 → MoSCoW → save to `.specs/requirements/001-login/requirements.md` →
+criteria → extract REQ-01/02 → MoSCoW → save to `.specs/changes/001-login/requirements.md` →
 report.
 
 ### Example 2: Use Cases + BDD (Hybrid)

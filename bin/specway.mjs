@@ -162,6 +162,52 @@ function writeBaselineIfCrossing(from, to) {
   return dirs.length;
 }
 
+// One-time layout migration: relocate a legacy `.specs/requirements/<n>-<slug>/requirements.md` into
+// its co-located change folder — changes/ if the spec is active, archive/ if already archived, else a
+// fresh changes/ dir (a requirements-only in-flight change). Copy-then-remove (no data loss),
+// idempotent (a no-op once `.specs/requirements/` is gone), and it rewrites each moved spec's
+// traceability link and the alignment review pointer to the co-located `requirements.md`.
+function migrateRequirementsColocation() {
+  const reqRoot = rel(TARGET, ".specs/requirements");
+  if (!isDir(reqRoot)) return 0; // already co-located, or a fresh project — nothing to migrate
+  const numOf = (name) => (name.match(/^(\d+)-/) || [])[1] || null;
+  const findDest = (num, name) => {
+    for (const base of ["changes", "archive"]) {
+      const dir = rel(TARGET, `.specs/${base}`);
+      if (!isDir(dir)) continue;
+      const hit = readdirSync(dir).find((d) => d !== ".gitkeep" && numOf(d) === num);
+      if (hit) return join(dir, hit);
+    }
+    return rel(TARGET, `.specs/changes/${name}`); // requirements-only in-flight → new change folder
+  };
+  let moved = 0;
+  for (const name of readdirSync(reqRoot)) {
+    if (name === ".gitkeep") continue;
+    const srcDir = join(reqRoot, name);
+    const src = join(srcDir, "requirements.md");
+    const num = numOf(name);
+    if (!isDir(srcDir) || !existsSync(src) || !num) continue;
+    const destDir = findDest(num, name);
+    if (!existsSync(join(destDir, "requirements.md"))) {
+      if (!DRY) { mkdirSync(destDir, { recursive: true }); cpSync(src, join(destDir, "requirements.md")); }
+      moved++;
+    }
+    if (!DRY) {
+      // Point the co-located spec's traceability link + the alignment review at the sibling requirements.md.
+      const specPath = join(destDir, "spec.md");
+      if (existsSync(specPath))
+        writeFileSync(specPath, readFileSync(specPath, "utf8")
+          .replace(/\(\.\.\/\.\.\/requirements\/[^)]*?requirements\.md\)/g, "(requirements.md)"));
+      const reviewPath = join(destDir, "alignment-review.md");
+      if (existsSync(reviewPath))
+        writeFileSync(reviewPath, readFileSync(reviewPath, "utf8")
+          .replace(/(\*\*Reviewed-requirements:\*\*\s*)\.\.\/\.\.\/requirements\/\S*/g, "$1requirements.md"));
+    }
+  }
+  if (!DRY) rmSync(reqRoot, { recursive: true, force: true }); // legacy tree fully migrated — remove it
+  return moved;
+}
+
 // --- commands ---
 function cmdInit() {
   guardNotInKit();
@@ -173,7 +219,7 @@ function cmdInit() {
   added.push(...copyMemoryScaffoldIfAbsent());
   for (const f of ADDITIVE_FILES) if (copyEntryIfAbsent(f)) added.push(f);
   for (const t of TOOLING) copyForce(t);
-  for (const g of [".specs/changes", ".specs/archive", ".specs/requirements"]) ensureGitkeep(g);
+  for (const g of [".specs/changes", ".specs/archive"]) ensureGitkeep(g);
   resetChangelog();
   regenerateIndex();
   log(`✓ scaffolded ${added.length} methodology paths into ${basename(TARGET)}`);
@@ -194,7 +240,7 @@ function cmdScan() {
   added.push(...copyMemoryScaffoldIfAbsent());
   for (const f of ADDITIVE_FILES) if (copyEntryIfAbsent(f)) added.push(f);
   for (const t of TOOLING) copyForce(t);
-  for (const g of [".specs/changes", ".specs/archive", ".specs/requirements"]) ensureGitkeep(g);
+  for (const g of [".specs/changes", ".specs/archive"]) ensureGitkeep(g);
   if (!exists(TARGET, "CHANGELOG.md")) resetChangelog(); // only create if the project has none
   regenerateIndex();
   const scanMerged = mergeSettingsHooks();
@@ -236,12 +282,15 @@ function cmdUpgrade() {
   if (!DRY) writeFileSync(cfgPath, cfg);
 
   const grandfathered = writeBaselineIfCrossing(from, to);
+  const migratedReqs = migrateRequirementsColocation();
 
   log(`✓ added ${added.length} new paths, refreshed ${refreshed} tooling files, regenerated the skills index`);
   if (upgradeMerged) log(`✓ merged new kit hooks into your existing .claude/settings.json (add-only, keyed)`);
   log(`✓ stamped .specs/config.md → Methodology Version ${to}`);
   if (grandfathered !== null)
     log(`✓ forward-only baseline written: ${grandfathered} pre-existing archived spec(s) grandfathered (exempt from the new traceability/alignment checks)`);
+  if (migratedReqs > 0)
+    log(`✓ co-located ${migratedReqs} requirements doc(s) into their change folder; legacy .specs/requirements/ removed`);
   log(`\nNext — run the reconcile-upgrade skill ("ajustar arquivos da metodologia") for the judgment steps:`);
   log("  • migrate AGENTS.md to the methodology split: move any inline rules into the @.specs/methodology.md import");
   log("  • adapt existing files to new conventions (e.g. give troubleshooting.md TRB-NN ids)");

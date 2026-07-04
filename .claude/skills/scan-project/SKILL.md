@@ -53,7 +53,7 @@ copy **only paths that do not already exist** in the target:
 
 - `.claude/skills/` (all skills, including this one)
 - `.specs/templates/`, `.specs/memory/` (scaffolds), `.specs/shared/`, `.specs/config.md`,
-  `.specs/changes/.gitkeep`, `.specs/archive/.gitkeep`, `.specs/requirements/.gitkeep`
+  `.specs/changes/.gitkeep`, `.specs/archive/.gitkeep`
 - `scripts/` (`check-consistency.mjs`, `update-changelog.mjs`, `update-skills-index.mjs`,
   `session-context.mjs`, `methodology-guard.mjs`, `methodology-nudge.mjs`)
 - `.github/workflows/consistency.yml`

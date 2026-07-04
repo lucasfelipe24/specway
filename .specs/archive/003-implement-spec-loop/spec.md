@@ -139,7 +139,7 @@ implement-spec <spec-dir>:
 
 ## Requirements Traceability
 
-**Requirements:** [`requirements/003-implement-spec-loop/requirements.md`](../../requirements/003-implement-spec-loop/requirements.md)
+**Requirements:** [`requirements.md`](requirements.md)
 
 | REQ ID | Requirement Summary | Priority | Acceptance Criteria |
 |---|---|---|---|

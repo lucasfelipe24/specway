@@ -14,7 +14,7 @@
 // stdin: PreToolUse JSON { tool_name, tool_input:{ file_path?, command? }, cwd }.
 // stdout: nothing (allow) OR a permissionDecision "deny" JSON with a reason fed back to the agent.
 
-import { readFileSync, existsSync, readdirSync, statSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
 import { join, resolve, relative, isAbsolute } from "node:path";
 
 const BASELINE = ".specs/baseline.json";
@@ -64,21 +64,13 @@ function relToRoot(root, p) {
   return r.startsWith("..") ? null : r;
 }
 
-function dirsUnder(p) {
-  try {
-    return readdirSync(p).filter((d) => d !== ".gitkeep" && statSync(join(p, d)).isDirectory());
-  } catch {
-    return [];
-  }
-}
-
-const numPrefix = (name) => (name.match(/^(\d+)-/) || [])[1] || null;
-
 // Given a spec dir name (e.g. "007-x"), return a deny reason if archiving it must be blocked, else null.
 function archiveGateVerdict(root, specDir) {
-  const num = numPrefix(specDir);
-  if (!num) return null;
-  const hasRequirements = dirsUnder(join(root, ".specs", "requirements")).some((d) => numPrefix(d) === num);
+  // Requirements live co-located with the spec; at PreToolUse the source (changes/) still exists,
+  // and on a re-check after the move the archive/ copy does.
+  const hasRequirements =
+    existsSync(join(root, ".specs", "changes", specDir, "requirements.md")) ||
+    existsSync(join(root, ".specs", "archive", specDir, "requirements.md"));
   if (!hasRequirements) return null; // lightweight / no-requirements path — the gate does not apply
 
   // The alignment review lives with the spec; at PreToolUse the source (changes/) still exists.

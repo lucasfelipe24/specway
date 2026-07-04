@@ -127,3 +127,44 @@ Template — copy, set today's date, append at the bottom:
 - **Next:** goes out as 1.5.2 (1.5.1 was already published *with* the leak — npm versions are
   immutable, so the fix ships forward). Ready to publish clean.
 - **Refs:** 1.5.2, package.json files[].
+
+## 2026-07-04 — Requirements co-located inside the change folder (CHG-005 / dir 004)
+
+- **Did:** Moved the requirements doc into its change folder — `.specs/changes/<nnn>-<slug>/requirements.md`,
+  travelling into `.specs/archive/` with the spec — and removed the separate `.specs/requirements/` tree.
+  Reworked `check-consistency` (traceability 6a/6b + alignment gate) to resolve requirements co-located
+  (dropped `REQUIREMENTS_DIR`); updated `session-context`, `methodology-guard` (+ its test), the
+  `feature-spec` template, 7 skills, and `METHODOLOGY.md`. Added an automatic migration to `specway upgrade`
+  (`migrateRequirementsColocation`: move-not-delete, presence-based/idempotent, rewrites the traceability
+  link + alignment pointer) + a `reconcile-upgrade` note. Migrated this repo's own layout (001/003 → archive,
+  004 → changes). New tests: `check-consistency-colocated` (anti green-but-blind) + `cli-requirements-migration`.
+  Suite 27 → 32; check + skills index green. Dogfooded the full flow (requirements → spec → review-alignment
+  `aligned` → implementation).
+- **Learned:** the migration must *reactivate* the gates, not just pass — after moving requirements the old
+  script went **green-but-blind** (traceability/alignment silently "skipped"), so the regression test asserts
+  the counts are ≥1, not merely that check exits 0. Presence-based migration (run whenever `.specs/requirements/`
+  exists) is more robust + idempotent than a version threshold. `check-consistency` never cross-checks versions
+  (only `cut-release` does), so co-location doesn't disturb the package↔methodology lockstep.
+- **Next:** review CHG-005, then **archive 004** and **cut the release as 1.6.0** (`cut-release` bumps package
+  + methodology together and rolls `[Unreleased]`). Migration is presence-based, so it fires for any project
+  crossing into ≥1.6.0.
+- **Methodology upgrade:** 1.5.2 → **1.6.0** (lands at the next release) — requirements co-location. Recorded in
+  `METHODOLOGY.md## Methodology Versions`.
+- **Refs:** CHG-005, changes/004-requirements-in-changes, `migrateRequirementsColocation`.
+
+## 2026-07-04 — create-project delivers the clean template (no kit dev history)
+
+- **Did:** After the maintainer flagged it ("era pra ser só template"), fixed `create-project` at the root
+  instead of band-aiding. It used to build the project *from* a full `git clone` of the kit (dragging in the
+  kit's `.specs/archive|changes`, `.specs/memory/` journal, `test/`) and only clean git history — a leak. Now
+  it clones to a **throwaway dir** and scaffolds the **clean template** into the target via `specway init`
+  (which already copies only the product, never dev artifacts), then discards the clone. Nothing dev-side is
+  ever pulled → **nothing to purge**. Updated `init-project` Step 6 to create identity files
+  (`package.json`/`README.md`) when absent (the clean channel ships none). create-project → 1.2.0.
+- **Learned:** the leak's real fix is *distribution*, not cleanup — the npm package already excludes the
+  kit's dev artifacts (`test/npm-package.test.mjs`) and `specway init` produces exactly that clean template;
+  create-project just wasn't using it. A first attempt (purge-after-clone) was the wrong shape — you don't
+  purge a template, you don't pull the dev artifacts in the first place. Reverted it.
+- **Next:** decide git-clone-to-temp vs. `npx @scope/specway init` as the source (repo HEAD vs. npm publish).
+  Repo-as-pure-template (removing the kit's own dogfooding from the repo) stays a separate maintainer call.
+- **Refs:** create-project 1.2.0, init-project Step 6, test/npm-package.test.mjs.

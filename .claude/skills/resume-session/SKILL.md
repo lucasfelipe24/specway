@@ -24,7 +24,7 @@ SessionStart hook injects automatically — useful in opencode (no hook) or any 
 
 - `scripts/session-context.mjs` — the generator this skill runs
 - `.specs/memory/log.md` — the working journal it reads (newest dated entry)
-- `.specs/changes/` and `.specs/requirements/` — active specs and requirements it inspects
+- `.specs/changes/` and `.specs/archive/` — co-located requirements + specs it inspects
 
 ## Instructions
 

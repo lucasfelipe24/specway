@@ -88,6 +88,13 @@ read the Methodology Versions notes):
   matcher. `specway upgrade` keyed-merges these into an existing `.claude/settings.json` automatically;
   if you upgraded **without** the CLI, add them keyed by `matcher`+`command` (add-only — never clobber
   your own hooks). Confirm `.claude/settings.json` carries them and that `matcher` includes `compact`.
+- **Requirements co-location (1.6.0):** the requirements doc now lives inside its change folder
+  (`.specs/changes/<nnn>-<slug>/requirements.md`) and travels into `.specs/archive/` with the spec — the
+  separate `.specs/requirements/` tree is gone. `specway upgrade` relocates a legacy
+  `.specs/requirements/` **automatically**: it moves each `requirements.md` into its matching
+  change/archive folder (by number) and rewrites the spec's traceability link + the alignment review's
+  pointer to the sibling `requirements.md`. Confirm `.specs/requirements/` is gone and each spec links
+  `](requirements.md)`; if you upgraded **without** the CLI, do the moves + link rewrites by hand.
 
 For anything the version introduced that isn't listed here, infer the adaptation from the Methodology
 Versions notes and the new files, and propose it.

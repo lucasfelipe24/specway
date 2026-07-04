@@ -105,7 +105,7 @@ Development`. Append the stack decision as **ADR-003** (do not overwrite the exi
 
 ### Step 5: Create Bootstrap Requirements and Spec
 
-Create `.specs/requirements/001-init/requirements.md` with:
+Create `.specs/changes/001-init/requirements.md` with:
 - Problem: new project initialization
 - Methodology: User Stories (for the setup itself)
 - Stakeholder: development team
@@ -119,27 +119,26 @@ Create `.specs/changes/001-init/spec.md` using the `feature-spec.md` template wi
 - **Requirements:** REQ-01: Project structure created with chosen tech stack
 - **Design:** N/A (no UI)
 - **Tests:** N/A (setup-only change)
-- **Requirements Traceability:** Linked to requirements/001-init/
+- **Requirements Traceability:** Linked to the co-located `requirements.md`
 - **Validation Checklist:** AGENTS.md filled, conventions set, ADR-003 written
 
 > Note: because CHG-001 is now a real spec in `changes/`, the `CHANGELOG.md` entry for it is only
 > created later, by `update-changelog`, after the spec is archived. Do not pre-seed the changelog.
 
-### Step 6: Reset Project-Identity Files
+### Step 6: Project-Identity Files
 
-A project bootstrapped from the kit must not inherit the **kit's own** identity files. Reset them so
-they represent the new project:
+The identity files must represent the **new project**, not the kit. The clean-template scaffold ships a
+blank `CHANGELOG.md` and **no** `package.json`/`README.md`; a legacy full clone would instead carry the
+kit's own. Either way, end at the project's own:
 
-1. **`CHANGELOG.md`** — overwrite the kit's changelog with the clean template:
-   copy `.specs/templates/changelog-template.md` to `CHANGELOG.md` (root). The project's history
-   starts empty; `update-changelog` fills it as specs are archived. Do **not** carry over the kit's
-   `[0.1.0] Initial release` or `[Unreleased]` entries.
-2. **`package.json`** (if the project is Node) — set `name` to the project name and `version` to
-   `0.1.0`; keep the `check`/`changelog` scripts. If the project is not Node, leave it as the user's
-   own concern.
-3. **`README.md`** — the kit's README documents the kit. Replace it with a minimal project README
-   (title + one-line description), or ask the user before overwriting. `METHODOLOGY.md` and `LICENSE`
-   may stay as reference.
+1. **`CHANGELOG.md`** — must be the clean template (`.specs/templates/changelog-template.md`): history
+   starts empty, and `update-changelog` fills it as specs are archived. The scaffold already resets it;
+   if you see the kit's `[0.1.0]`/`[Unreleased]` entries (a legacy full clone), overwrite it.
+2. **`package.json`** (Node projects) — **create it if absent** (the clean scaffold ships none), else set
+   the fields on the kit's (legacy clone): `name` = project name, `version` = `0.1.0`, keeping the
+   `check`/`changelog` scripts. Non-Node: leave it as the user's own concern.
+3. **`README.md`** — **create** a minimal project README (title + one-line description) if absent, or
+   replace the kit's if present (ask before overwriting). `METHODOLOGY.md` and `LICENSE` may stay as reference.
 
 > The methodology *structure* version stays in `.specs/config.md## Methodology Version` — that one is
 > intentionally carried over, because it records which methodology the project was set up with.
@@ -170,7 +169,7 @@ After completing the bootstrap, report:
 2. Fill AGENTS.md with React, Node, PostgreSQL, Vitest
 3. Narrow conventions.md to React+Node+PostgreSQL options
 4. Append ADR-003 with the full stack
-5. Create requirements/001-init/requirements.md and changes/001-init/spec.md
+5. Create changes/001-init/requirements.md and changes/001-init/spec.md
 6. Report summary
 
 ### Example 2: CLI + Python

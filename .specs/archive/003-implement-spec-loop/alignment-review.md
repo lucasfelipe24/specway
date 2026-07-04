@@ -1,7 +1,7 @@
 # Alignment Review — CHG-004
 
 - **Reviewed-spec:** CHG-004
-- **Reviewed-requirements:** ../../requirements/003-implement-spec-loop/requirements.md
+- **Reviewed-requirements:** requirements.md
 - **Date:** 2026-07-02
 - **Verdict:** aligned
 

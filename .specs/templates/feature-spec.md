@@ -94,12 +94,13 @@ What is explicitly NOT included — avoid scope creep.
 
 ## Requirements Traceability
 
-> Links this implementation spec back to the requirements document. Use a **relative Markdown link**
-> (renders on GitHub, works as an Obsidian vault) — the canonical join key is the `REQ-NN` id, so the
-> consistency checker resolves traceability by id, never by link syntax. Every `REQ-NN` defined in the
-> requirements doc must appear here; every id here must exist there (no dangling refs).
+> Links this implementation spec back to its **co-located** requirements doc — the sibling
+> `requirements.md` in this same change folder. Use a relative Markdown link (renders on GitHub, works
+> as an Obsidian vault) — the canonical join key is the `REQ-NN` id, so the consistency checker
+> resolves traceability by id, never by link syntax. Every `REQ-NN` defined in the requirements doc
+> must appear here; every id here must exist there (no dangling refs).
 
-**Requirements:** [`requirements/<nnn>-<slug>/requirements.md`](../../requirements/<nnn>-<slug>/requirements.md)
+**Requirements:** [`requirements.md`](requirements.md)
 
 | REQ ID | Requirement Summary | Priority | Acceptance Criteria |
 |---|---|---|---|

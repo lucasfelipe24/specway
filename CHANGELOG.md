@@ -10,10 +10,26 @@ Generated automatically from `.specs/archive/` via the `update-changelog` skill.
 ### Added
 
 ### Changed
+- **Requirements docs are now co-located inside the change folder** (`.specs/changes/<nnn>-<slug>/requirements.md`)
+  and travel into `.specs/archive/` with the spec, so each change is one self-contained, greppable folder
+  (requirements + spec + alignment review). `check-consistency` traceability and the alignment gate resolve
+  requirements co-located; skills, templates, and the methodology docs point at the sibling `requirements.md`.
+  `specway upgrade` migrates a legacy `.specs/requirements/` automatically (move-not-delete; the traceability
+  link and alignment pointer are rewritten to the sibling), and `reconcile-upgrade` verifies it. Guarded by a
+  regression test that fails if the gates ever silently skip after migration ("green-but-blind").
 
 ### Fixed
+- **`create-project` no longer drags the kit's own development history into a new project.** It used to
+  `git clone` the whole kit tree (bringing the kit's `.specs/archive/`, `.specs/changes/`, its
+  `.specs/memory/` journal and `test/`) and clear only the git *history* — leaving those dev artifacts to
+  poison the new project's spec numbering, `resume-session`, changelog and gates. It now clones to a
+  throwaway dir and scaffolds the **clean template** into the target via `specway init` (which copies only
+  the product, never the kit's dev artifacts), so the project starts with an empty spec history **by
+  construction** — nothing to purge. `init-project` Step 6 now creates the identity files when absent.
 
 ### Removed
+- **The separate `.specs/requirements/` tree.** Its contents move into each change's folder — ending the
+  leak where a change's requirements were left orphaned in `.specs/requirements/` forever after it archived.
 
 ---
 

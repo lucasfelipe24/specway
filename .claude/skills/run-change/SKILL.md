@@ -57,8 +57,8 @@ When in doubt, ask the user one question to disambiguate, then choose.
 ### Step 3: Full Path (delegate)
 
 If the change is non-trivial, do not improvise a spec here — run the `gather-requirements` skill to
-produce `.specs/requirements/<nnn>-<slug>/`, then create the full `changes/<nnn>-<slug>/spec.md`
-from `feature-spec.md`. Before `run-tdd`, run the `review-alignment` skill to confirm the spec
+produce `.specs/changes/<nnn>-<slug>/requirements.md`, then create the sibling `spec.md`
+from `feature-spec.md` in that same folder. Before `run-tdd`, run the `review-alignment` skill to confirm the spec
 actually covers every `REQ-NN` from the requirements doc — this is the requirements→spec transition
 where specs silently drift. Only on an `aligned` verdict proceed to `run-tdd`. For a spec that carries
 a `## Tasks` section (multi-task), you may drive implementation autonomously with the `implement-spec`

@@ -23,8 +23,8 @@ silently dropping requirements that were written down. It catches that before it
 
 ## Prerequisites
 
-- The requirements doc: `.specs/requirements/<nnn>-<slug>/requirements.md`
-- The spec under review: `.specs/changes/<nnn>-<slug>/spec.md` (same `<nnn>`)
+- The requirements doc: `.specs/changes/<nnn>-<slug>/requirements.md` (co-located in the change folder)
+- The spec under review: `.specs/changes/<nnn>-<slug>/spec.md` — its sibling in the same folder
 - `.specs/templates/feature-spec.md` — the `## Requirements Traceability` section being validated
 - `scripts/check-consistency.mjs` — the gate that consumes this skill's output
 
@@ -74,7 +74,7 @@ metadata line and the REQ ids):
 # Alignment Review — CHG-<nnn>
 
 - **Reviewed-spec:** CHG-<nnn>
-- **Reviewed-requirements:** ../../requirements/<nnn>-<slug>/requirements.md
+- **Reviewed-requirements:** requirements.md
 - **Date:** YYYY-MM-DD
 - **Verdict:** aligned        <!-- or: misaligned -->
 
@@ -120,7 +120,7 @@ scope drift, the artifact path, and — if `misaligned` — the precise gap to c
 
 **User says:** "revisar alinhamento do spec 003 contra os requisitos"
 
-**Agent should:** read `requirements/003-*/requirements.md` (REQ-01..05) and `changes/003-*/spec.md`
+**Agent should:** read `changes/003-*/requirements.md` (REQ-01..05) and `changes/003-*/spec.md`
 → find REQ-04 (audit log) addressed nowhere → write `alignment-review.md` with REQ-04 `Missing` and
 **Verdict:** misaligned → tell the user to add the audit-log design before `run-tdd`. Do not proceed.
 

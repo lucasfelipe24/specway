@@ -118,7 +118,7 @@ whole-repo `check-consistency`, an "update AGENTS.md?" watcher, any auto-commit/
 
 ## Requirements Traceability
 
-**Requirements:** [`requirements/001-methodology-hooks/requirements.md`](../../requirements/001-methodology-hooks/requirements.md)
+**Requirements:** [`requirements.md`](requirements.md)
 
 | REQ ID | Requirement Summary | Priority | Acceptance Criteria |
 |---|---|---|---|

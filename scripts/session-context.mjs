@@ -21,7 +21,6 @@ try {
     existsSync(p)
       ? readdirSync(p).filter((d) => d !== ".gitkeep" && statSync(join(p, d)).isDirectory()).sort()
       : [];
-  const numOf = (name) => (name.match(/^(\d+)-/) || [])[1] || null;
 
   const out = [];
 
@@ -46,13 +45,15 @@ try {
     }
   }
 
-  // 2) Specs in flight, with their alignment-gate state.
+  // 2) Specs in flight (a change folder with a spec.md), with their alignment-gate state.
+  //    Requirements are co-located (changes/<d>/requirements.md), so a requirements-backed spec
+  //    is one whose folder holds both files.
   const active = dirsIn(join(SPECS, "changes"));
-  if (active.length) {
+  const withSpec = active.filter((d) => existsSync(join(SPECS, "changes", d, "spec.md")));
+  if (withSpec.length) {
     out.push((out.length ? "\n" : "") + "Active specs (.specs/changes/):");
-    for (const d of active) {
-      const num = numOf(d);
-      const hasReq = num && dirsIn(join(SPECS, "requirements")).some((r) => numOf(r) === num);
+    for (const d of withSpec) {
+      const hasReq = existsSync(join(SPECS, "changes", d, "requirements.md"));
       let gate = "";
       if (hasReq) {
         const review = read(join(SPECS, "changes", d, "alignment-review.md"));
@@ -66,13 +67,15 @@ try {
     }
   }
 
-  // 3) Requirements with no spec started yet.
-  const reqs = dirsIn(join(SPECS, "requirements"));
-  const specNums = new Set([...dirsIn(join(SPECS, "changes")), ...dirsIn(join(SPECS, "archive"))].map(numOf));
-  const orphanReqs = reqs.filter((r) => !specNums.has(numOf(r)));
-  if (orphanReqs.length) {
+  // 3) Requirements gathered but no spec written yet (a change folder with requirements.md, no spec.md).
+  const reqOnly = active.filter(
+    (d) =>
+      existsSync(join(SPECS, "changes", d, "requirements.md")) &&
+      !existsSync(join(SPECS, "changes", d, "spec.md"))
+  );
+  if (reqOnly.length) {
     out.push((out.length ? "\n" : "") + "Requirements without a spec yet:");
-    for (const r of orphanReqs) out.push(`  • ${r} → create .specs/changes/${r}/spec.md`);
+    for (const r of reqOnly) out.push(`  • ${r} → write .specs/changes/${r}/spec.md`);
   }
 
   if (out.length === 0) process.exit(0); // nothing to resume — stay silent

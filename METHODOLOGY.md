@@ -65,7 +65,7 @@ A ready-to-use template is provided in `specway/`. Clone or copy it to bootstrap
 
 ## 2. Requirements Engineering
 
-Before writing a spec, requirements must be gathered, analyzed, and documented. This phase lives in `.specs/requirements/`.
+Before writing a spec, requirements must be gathered, analyzed, and documented. The output — the requirements doc — lives **co-located** inside the change folder: `.specs/changes/<nnn>-<slug>/requirements.md`.
 
 ### Full Lifecycle
 
@@ -73,8 +73,8 @@ Before writing a spec, requirements must be gathered, analyzed, and documented. 
 IDEA (raw problem or opportunity)
   → GATHERING (gather requirements from stakeholders)
     → ANALYSIS (prioritize, resolve conflicts, identify dependencies)
-      → REQUIREMENTS DOC (requirements-spec.md in requirements/<nnn>-<slug>/)
-        → SPECIFICATION (spec.md in changes/<nnn>-<slug>/)
+      → REQUIREMENTS DOC (requirements.md in changes/<nnn>-<slug>/)
+        → SPECIFICATION (spec.md alongside it, same folder)
           → IMPLEMENTATION (TDD: Red → Green → Refactor)
             → VALIDATION (tests pass, stakeholder sign-off)
               → ARCHIVE
@@ -83,12 +83,13 @@ IDEA (raw problem or opportunity)
 ### Directory Flow
 
 ```
-.specs/requirements/<nnn>-<slug>/requirements.md   (Phase: Gathering & Analysis)
+.specs/changes/<nnn>-<slug>/requirements.md         (Phase: Gathering & Analysis)
     →  .specs/changes/<nnn>-<slug>/spec.md          (Phase: Specification & Implementation)
-        →  .specs/archive/<nnn>-<slug>/             (Phase: Completed)
+        →  .specs/archive/<nnn>-<slug>/             (Phase: Completed — the whole folder,
+                                                     requirements.md + spec.md, moves here)
 ```
 
-The same `<nnn>` number is used across directories for full traceability: from requirements → spec → archive.
+One `<nnn>-<slug>` folder holds the requirements doc, its spec, and the alignment review, and travels together from gathering to archive — one self-contained, greppable unit per change.
 
 ### Gathering Methodologies
 
@@ -125,9 +126,9 @@ The `requirements-spec.md` template includes:
 ### Requirements → Spec Transition
 
 When requirements are approved:
-1. The requirement document stays in `requirements/<nnn>-<slug>/`
-2. A new spec is created in `changes/<nnn>-<slug>/` using the **same number**
-3. The spec's `## Requirements Traceability` section links back to the requirements document
+1. The requirements document is already in `changes/<nnn>-<slug>/` (co-located from the start)
+2. A new `spec.md` is created **beside** it in the same folder
+3. The spec's `## Requirements Traceability` section links its co-located `requirements.md`
 4. Stories/use cases from requirements are broken into technical tasks in the spec
 
 ### Skill
@@ -149,7 +150,7 @@ Not every change needs formal requirements. Skip this phase when:
 
 ```
 0. GATHER REQUIREMENTS (if applicable)
-   Use requirements-spec.md in .specs/requirements/<nnn>-<slug>/
+   Use requirements-spec.md → .specs/changes/<nnn>-<slug>/requirements.md
    Choose methodology: User Stories, Use Cases, Job Stories, or BDD
    See Section 2 for full details.
 
@@ -568,7 +569,7 @@ When starting a new project with this methodology:
 5. [ ] Fill in `.specs/shared/schema-current.md` with your DB schema
 6. [ ] Create your first skill in `.claude/skills/<name>/SKILL.md` (use `create-skill`)
 7. [ ] Write your first ADR in `.specs/memory/architecture.md`
-8. [ ] Begin spec-driven: create `.specs/requirements/001-init/` for your first requirements
+8. [ ] Begin spec-driven: create `.specs/changes/001-init/requirements.md` for your first requirements
 
 ### Adding methodology to an existing project
 
@@ -633,6 +634,7 @@ own product version:
 | **1.2.0** | 2026-06-26 | `specway` CLI (deterministic init/scan/upgrade/check via npx) + `reconcile-upgrade` skill for the post-upgrade judgment phase. Forward-only baseline (`.specs/baseline.json`) so upgrading a mature repo never fails CI retroactively. Bilingual + groupable troubleshooting schema. **AGENTS.md ↔ methodology split:** kit-owned rules moved to `.specs/methodology.md` (imported by `AGENTS.md`), so upgrades replace one file and never touch the project-owned `AGENTS.md`. |
 | **1.4.0** | 2026-07-02 | **Methodology-enforcing Claude Code hooks:** a `PreToolUse` guard (`methodology-guard.mjs`) blocks archiving a requirements-backed spec until its alignment review reads `aligned` and blocks hand-edits of `baseline.json`; a `PostToolUse` nudge (`methodology-nudge.mjs`) flags a spec written with no Tests section and turns a `specway upgrade\|scan\|init` run into a next-step directive; the `SessionStart` hook re-injects resume context after `compact`. Idempotent keyed hook-merge (`merge-hooks.mjs`) so `scan`/`upgrade` deliver kit hook wiring into an existing (frozen) `.claude/settings.json` without clobbering project hooks. A `node --test` suite (`test/`) for the kit scripts. Hooks are a Claude-Code-only accelerator — CI + skills remain the harness-agnostic enforcement. |
 | **1.5.0** | 2026-07-02 | **cc-sdd-inspired batch:** **EARS** as a requirements methodology (`gather-requirements` + template); **`## Tasks`** (boundary/deps) + **`## File Structure Plan`** in the feature-spec template; **`specway --dry-run`** (preview init/scan/upgrade, writes nothing); and the autonomous **`implement-spec`** loop — a Claude Code Workflow that implements a spec's tasks one at a time with a fresh implementer, **N=3** independent reviewers, and auto-debug, backed by the deterministic `scripts/spec-tasks.mjs` task parser. Accelerator over `run-tdd`; CI + skills stay the harness-agnostic baseline. |
+| **1.6.0** | 2026-07-04 | **Requirements co-location:** the requirements doc now lives inside its change folder (`.specs/changes/<nnn>-<slug>/requirements.md`) and travels into `.specs/archive/` with the spec — the separate `.specs/requirements/` tree is gone, so every change is one self-contained folder (requirements + spec + alignment review), ending the orphaned-requirements-after-archive leak. `check-consistency` traceability + the alignment gate resolve requirements co-located; skills, templates, and docs point at the sibling `requirements.md`. `specway upgrade` migrates a legacy `.specs/requirements/` automatically (move-not-delete; traceability link + alignment pointer rewritten to the sibling), verified by `reconcile-upgrade`. |
 
 ---
 

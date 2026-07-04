@@ -36,7 +36,7 @@ const cleanup = (root) => rmSync(root, { recursive: true, force: true });
 
 test("TEST-01: denies archiving an unaligned requirements-backed spec", () => {
   const root = makeRepo();
-  writeFile(root, ".specs/requirements/007-x/requirements.md", "REQ-01 the system must foo");
+  writeFile(root, ".specs/changes/007-x/requirements.md", "REQ-01 the system must foo");
   writeFile(root, ".specs/changes/007-x/spec.md", "# Spec\nREQ-01");
   const { status, out } = run({
     tool_name: "Bash",
@@ -52,7 +52,7 @@ test("TEST-01: denies archiving an unaligned requirements-backed spec", () => {
 
 test("TEST-02: allows archiving an aligned spec", () => {
   const root = makeRepo();
-  writeFile(root, ".specs/requirements/007-x/requirements.md", "REQ-01 the system must foo");
+  writeFile(root, ".specs/changes/007-x/requirements.md", "REQ-01 the system must foo");
   writeFile(root, ".specs/changes/007-x/spec.md", "# Spec\nREQ-01");
   writeFile(root, ".specs/changes/007-x/alignment-review.md", "- **Verdict:** aligned\n");
   const { status, out } = run({

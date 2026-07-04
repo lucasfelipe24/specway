@@ -1,7 +1,7 @@
 # Alignment Review — CHG-002
 
 - **Reviewed-spec:** CHG-002
-- **Reviewed-requirements:** ../../requirements/001-methodology-hooks/requirements.md
+- **Reviewed-requirements:** requirements.md
 - **Date:** 2026-07-02
 - **Verdict:** aligned
 
